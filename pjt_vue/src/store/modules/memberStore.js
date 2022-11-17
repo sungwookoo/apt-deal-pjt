@@ -48,6 +48,8 @@ const memberStore = {
       await login(
         user,
         ({ data }) => {
+          alert("confirm success");
+          console.log(data);
           if (data.message === "success") {
             let accessToken = data["access-token"];
             let refreshToken = data["refresh-token"];
