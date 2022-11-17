@@ -14,7 +14,7 @@
               ref="userLoginId"
               required
               placeholder="아이디 입력...."
-              v-model="user.userid"
+              v-model="user.userId"
               @keyup.enter="validate"></b-form-input>
           </b-form-group>
           <b-form-group label="비밀번호:" label-for="userpwd">
@@ -22,7 +22,7 @@
               type="password"
               ref="userLoginPwd"
               required
-              v-model="user.userpwd"
+              v-model="user.userPassword"
               placeholder="비밀번호 입력...."
               @keyup.enter="validate"></b-form-input>
           </b-form-group>
@@ -58,25 +58,31 @@
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
+const memberStore = "memberStore";
 export default {
   data() {
     return {
       user: {
-        userid: "",
-        userpwd: "",
+        userId: "",
+        userPassword: "",
       },
     };
   },
+  computed: {
+    ...mapState(memberStore, ["isLogin", "isLoginError", "userInfo"]),
+  },
   methods: {
+    ...mapActions(memberStore, ["userConfirm", "getUserInfo"]),
     validate() {
       let isValid = true;
       let errMsg = "";
 
-      !this.user.userid.trim()
+      !this.user.userId.trim()
         ? ((isValid = false),
           (errMsg = "아이디를 입력해주세요."),
           this.$refs.userLoginId.focus())
-        : !this.user.userpwd.trim()
+        : !this.user.userPassword.trim()
         ? ((isValid = false),
           (errMsg = "비밀번호를 입력해주세요."),
           this.$refs.userLoginPwd.focus())
@@ -85,14 +91,20 @@ export default {
       if (!isValid) {
         alert(errMsg);
       } else {
-        // const payload = {
-        //   type: this.type,
-        //   searchParam: this.userLoginId.trim(),
-        //   selected: this.selected,
-        // };
-        // this.selected = "subject";
-        // this.searchParam = "";
-        // this.getBoardSearch(payload);
+        console.log(this.user);
+        this.confirm();
+      }
+    },
+    async confirm() {
+      console.log(this.user);
+      await this.userConfirm(this.user);
+      let token = sessionStorage.getItem("access-token");
+      // console.log("1. confirm() token >> " + token);
+      if (this.isLogin) {
+        await this.getUserInfo(token);
+        // console.log("4. confirm() userInfo :: ", this.userInfo);
+        console.log(this.userInfo + "======= 로그인 성공");
+        this.$router.push({ name: "Home" });
       }
     },
   },

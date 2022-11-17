@@ -53,6 +53,7 @@ public class MemberRestController {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		try {
+			logger.debug("로그인 memberDto 정보 : " + memberDto.toString());	
 			MemberDto loginUser = memberService.loginMember(memberDto);
 			if (loginUser != null) {
 				String accessToken = jwtService.createAccessToken("userid", loginUser.getUserId());// key, data
@@ -74,6 +75,7 @@ public class MemberRestController {
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
+		logger.debug("로그인 resultMap 정보 : " + resultMap.toString());
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	

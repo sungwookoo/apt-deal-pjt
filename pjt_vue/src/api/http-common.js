@@ -4,6 +4,6 @@ import axios from "axios";
 export default axios.create({
   baseURL: "http://localhost:9999/api",
   headers: {
-    "Context-Type": "application/json",
+    "Content-Type": "application/json;charset=utf-8",
   },
 });
