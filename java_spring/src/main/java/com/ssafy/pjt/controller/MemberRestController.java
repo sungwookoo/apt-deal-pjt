@@ -180,12 +180,15 @@ public class MemberRestController {
 	
 	@GetMapping("/search")
 	public ResponseEntity<?> search(@RequestParam(name="userid") String id){
+		Map<String, Object> resultMap = new HashMap<>();
 		try {
 			List<MemberDto> selected = memberService.userList(id.trim());
 			for(MemberDto m : selected)logger.debug(m.toString());
 			
-			if (selected != null && selected.size() > 0) {
-				return new ResponseEntity<List<MemberDto>>(selected, HttpStatus.OK);
+			if (selected != null && selected.size() >= 0) {
+				resultMap.put("message", "success");
+				resultMap.put("userList", selected);
+				return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 			}
 			else {
 				return new ResponseEntity<Void>(HttpStatus.UNAUTHORIZED);

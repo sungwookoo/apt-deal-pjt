@@ -84,9 +84,35 @@ const routes = [
       {
         path: "management",
         name: "UserManagement",
-        // redirect: "/",
+        redirect: "/",
         component: () => import("@/components/user/UserManagement.vue"),
-        children: [],
+        children: [
+          {
+            path: "login",
+            name: "UserLogin",
+            component: () => import("@/components/user/UserLogin.vue"),
+          },
+          {
+            path: "create",
+            name: "UserCreate",
+            component: () => import("@/components/user/UserCreate.vue"),
+          },
+          {
+            path: "modify",
+            name: "UserModify",
+            component: () => import("@/components/user/UserModify.vue"),
+          },
+          {
+            path: "detail",
+            name: "UserDetail",
+            component: () => import("@/components/user/UserDetail.vue"),
+          },
+          {
+            path: "find",
+            name: "UserFind",
+            component: () => import("@/components/user/UserFind.vue"),
+          },
+        ],
       },
       {
         path: "list",

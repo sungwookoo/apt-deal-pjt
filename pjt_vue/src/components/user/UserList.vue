@@ -34,7 +34,7 @@
       </b-col>
     </b-row>
     <b-row>
-      <b-col v-if="userList.length">
+      <b-col v-if="userList">
         <b-table-simple hover responsive>
           <b-thead head-variant="dark">
             <b-tr class="text-center">
@@ -67,7 +67,8 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapState } from "vuex";
+const memberStore = "memberStore";
 export default {
   data() {
     return {
@@ -78,7 +79,7 @@ export default {
     "list-row": () => import("@/components/user/include/ListRow.vue"),
   },
   methods: {
-    ...mapActions(["getUserList"]),
+    ...mapActions(memberStore, ["getUserList"]),
     validate() {
       let isValid = true;
       let errMsg = "";
@@ -92,9 +93,7 @@ export default {
       if (!isValid) {
         alert(errMsg);
       } else {
-        const payload = {
-          userid: this.idSearchParam.trim(),
-        };
+        const payload = this.idSearchParam.trim();
         this.idSearchParam = "";
         this.getUserList(payload);
       }
@@ -104,13 +103,11 @@ export default {
     },
   },
   created() {
-    const payload = {
-      userid: "",
-    };
-    this.getUserList(payload);
+    const userid = "";
+    this.getUserList(userid);
   },
   computed: {
-    ...mapGetters(["userList"]),
+    ...mapState(memberStore, ["userList"]),
   },
 };
 </script>

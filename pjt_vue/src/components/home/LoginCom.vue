@@ -1,8 +1,6 @@
 <template>
   <div>
-    <router-link class="link" :to="{ name: 'UserManagement' }">
-      로그인
-    </router-link>
+    <router-link class="link" :to="{ name: 'UserLogin' }"> 로그인 </router-link>
   </div>
 </template>
 

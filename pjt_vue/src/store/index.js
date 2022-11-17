@@ -1,7 +1,10 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import http from "@/util/http-common";
+import http from "@/api/http-common";
 import persistedState from "vuex-persistedstate";
+
+// module import
+import memberStore from "@/store/modules/memberStore";
 
 Vue.use(Vuex);
 
@@ -12,14 +15,6 @@ export default new Vuex.Store({
     board: {},
     searchNotice: [],
     searchQna: [],
-
-    // 유저
-    userInfo: {
-      userId: "ssafy",
-      userName: "ssafy",
-      islogin: false,
-    },
-    userList: [],
   },
   getters: {
     // 게시판(공지사항, QnA)
@@ -34,14 +29,6 @@ export default new Vuex.Store({
     },
     searchQna(state) {
       return state.searchQna;
-    },
-
-    // 유저
-    userInfo(state) {
-      return state.userInfo;
-    },
-    userList(state) {
-      return state.userList;
     },
   },
   mutations: {
@@ -61,19 +48,6 @@ export default new Vuex.Store({
       }
       state.searchNotice = payload.searchBoard.slice(0, count);
       state.searchQna = payload.searchBoard.slice(count);
-    },
-
-    // 유저
-    USERLIST(state, payload) {
-      payload.userList.sort((a, b) => {
-        if (a.userType == b.userType) {
-          return a.joinDate > b.joinDate ? 1 : -1;
-        } else {
-          return a.userType > b.userType ? 1 : -1;
-        }
-      });
-      console.log(payload.userList);
-      state.userList = payload.userList;
     },
   },
   actions: {
@@ -195,27 +169,10 @@ export default new Vuex.Store({
         });
       });
     },
-
-    // 유저 함수
-    getUserList(context, payload) {
-      http.get(`/user/search?userid=${payload.userid}`).then((response) => {
-        console.log(response);
-        switch (response.status) {
-          case 200:
-            context.commit({
-              type: "USERLIST",
-              userList: response.data,
-            });
-            break;
-          case 401:
-            break;
-          case 500:
-            break;
-        }
-      });
-    },
   },
-  modules: {},
+  modules: {
+    memberStore,
+  },
   plugins: [
     persistedState({
       storage: sessionStorage,

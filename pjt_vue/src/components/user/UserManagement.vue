@@ -12,7 +12,7 @@
             width="90%"
             alt="kitten" />
         </b-col>
-        <b-col class="m-1" style="border: solid" offset="2"> 안녕 </b-col>
+        <router-view></router-view>
       </b-row>
     </b-row>
   </b-container>

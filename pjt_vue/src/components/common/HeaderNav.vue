@@ -60,12 +60,12 @@
 
           <b-nav-item-dropdown right>
             <b-dropdown-item
-              ><router-link :to="{ name: 'Home' }" class="link"
+              ><router-link :to="{ name: 'UserCreate' }" class="link"
                 >회원가입</router-link
               ></b-dropdown-item
             >
             <b-dropdown-item
-              ><router-link :to="{ name: 'Home' }" class="link"
+              ><router-link :to="{ name: 'UserLogin' }" class="link"
                 >로그인</router-link
               ></b-dropdown-item
             >
@@ -75,18 +75,13 @@
               ></b-dropdown-item
             >
             <b-dropdown-item
-              ><router-link :to="{ name: 'Home' }" class="link"
+              ><router-link :to="{ name: 'UserDetail' }" class="link"
                 >회원 정보</router-link
               ></b-dropdown-item
             >
             <b-dropdown-item
               ><router-link :to="{ name: 'UserList' }" class="link"
                 >회원 목록</router-link
-              ></b-dropdown-item
-            >
-            <b-dropdown-item
-              ><router-link :to="{ name: 'Home' }" class="link"
-                >관리자 계정 생성</router-link
               ></b-dropdown-item
             >
           </b-nav-item-dropdown>
