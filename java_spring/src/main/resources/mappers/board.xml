@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.pjt.model.mapper.BoardDao">
+	<select id="listBoard" parameterType="map" resultType="boardDto">
+		SELECT board_no, content, user_id, user_name, subject, create_date, type
+		FROM boards
+		WHERE type = #{type}
+		<if test="searchParam != null">
+			AND ${searchType} LIKE CONCAT("%", #{searchParam}, "%")
+		</if>
+		ORDER by board_no DESC
+		<!-- LIMIT 0, 10 -->
+	</select>
+
+	<insert id="writeBoard" parameterType="boardDto">
+		INSERT INTO boards (user_id, user_name, subject, content, type)
+		VALUES (#{userId}, #{userName}, #{subject}, #{content}, #{type})
+	</insert>
+	
+	<select id="getBoard" parameterType="int" resultType="boardDto">
+		SELECT board_no, user_id, user_name, subject, content, hit, create_date, type
+		FROM boards
+		WHERE board_no = #{boardNo}
+	</select>
+	
+	<update id="updateHit" parameterType="int">
+		UPDATE boards
+		SET hit = hit + 1
+		WHERE board_no = #{boardNo}
+	</update>
+	
+	<update id="modifyBoard" parameterType="boardDto">
+		UPDATE boards
+		SET subject = #{subject}, content = #{content}
+		WHERE board_no = #{boardNo}
+	</update>
+	
+	<delete id="deleteBoard" parameterType="int">
+		DELETE FROM boards
+		WHERE board_no = #{articleNo}
+	</delete>
+	
+	<select id="searchBoard" parameterType="string" resultType="boardDto">
+		SELECT board_no, user_id, user_name, subject, content, create_date, type
+		FROM boards
+		<if test="keyword != null">
+			WHERE subject LIKE CONCAT("%", #{keyword}, "%") OR content LIKE CONCAT("%", #{keyword}, "%")
+		</if>
+		ORDER BY type asc, board_no desc
+	</select>
+	
+</mapper>

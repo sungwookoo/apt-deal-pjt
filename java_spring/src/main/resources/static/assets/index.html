@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
+    <!-- font awesome -->
+    <script src="https://kit.fontawesome.com/c452641c94.js" crossorigin="anonymous"></script>
+    <link href="./css/common.css" rel="stylesheet" />
+    <title>구해줘 홈즈</title>
+  </head>
+  <body>
+    <!-- Header -->
+    <div class="include" data-html="header.html"></div>
+
+    <!-- Main -->
+    <main class="container mt-4">
+      <!-- 타이틀 -->
+      <div style="height: 250px"></div>
+      <div class="text-center text-dark display-3 fw-bold">구해줘 홈즈</div>
+      <div style="height: 150px"></div>
+
+      <!-- 로그인 -->
+      <div class="text-center display-5 fw-bold" id="if-not-login-index">
+        <a class="text-light text-decoration-none" href="/assets/login.html">Login</a>
+      </div>
+      <div class="text-center display-5 fw-bold" id="if-login-index" style="display: none">
+        <p class="text-light text-decoration-none" id="if-login-index-name"></p>
+        <p class="text-light text-decoration-none">환영합니다.</p>
+      </div>
+
+      <!-- 동별 매매 평균가 -->
+      <div style="height: 50px"></div>
+      <div class="justify-content-md-center row">
+        <div class="text-center text-light display-6">동별 매매 평균가 TOP5</div>
+        <div class="sorting-filters text-center mb-20 d-flex justify-content-center">
+          <div class="form-group">
+            <select class="form-select" id="big" aria-label="Default select example">
+              <option value="">도/광역시</option>
+              <option value="1100000000">서울시</option>
+              <option value="4100000000">경기도</option>
+              <option value="2800000000">인천광역시</option>
+              <option value="2600000000">부산광역시</option>
+              <option value="3000000000">대전광역시</option>
+              <option value="2700000000">대구광역시</option>
+              <option value="3100000000">울산광역시</option>
+              <option value="2900000000">광주광역시</option>
+              <option value="4200000000">강원도</option>
+              <option value="4300000000">충청북도</option>
+              <option value="4400000000">충청남도</option>
+              <option value="4700000000">경상북도</option>
+              <option value="4800000000">경상남도</option>
+              <option value="4500000000">전라북도</option>
+              <option value="4600000000">전라남도</option>
+              <option value="5000000000">제주도</option>
+            </select>
+          </div>
+          <div class="form-group ms-1">
+            <select class="form-select" id="middle" aria-label="Default select example">
+              <option value="">구군선택</option>
+            </select>
+          </div>
+        </div>
+        <div class="text-center bg-white mt-1 col-6 bg-opacity-75 pb-4" id="dealInfo"></div>
+      </div>
+      <div style="height: 170px"></div>
+
+      <!-- 이동 -->
+      <div class="row">
+        <div class="col-4 text-center">
+          <a class="display-1 text-light" href="/assets/notice.html"
+            ><i class="fa-solid fa-bullhorn"></i
+          ></a>
+        </div>
+        <div class="col-4 text-center">
+          <a class="display-1 text-light" href="/assets/findHome.html"
+            ><i class="fa-solid fa-magnifying-glass"></i
+          ></a>
+        </div>
+        <div class="col-4 text-center">
+          <a class="display-1 text-light"><i class="fa-regular fa-newspaper"></i></a>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <div class="include" data-html="footer.html"></div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+      crossorigin="anonymous"
+    ></script>
+    <script src="./js/include.js"></script>
+    <script src="./js/header.js"></script>
+    <script src="./js/indexFind.js"></script>
+    <script>
+      window.onload = function () {
+        const user = JSON.parse(sessionStorage.getItem('user'));
+
+        if (user) {
+          document.querySelector('#if-login-index-name').innerText = `${user.userName}님`;
+          document.querySelector('#if-login-index').style.display = 'block';
+          document.querySelector('#if-not-login-index').style.display = 'none';
+        }
+      };
+    </script>
+  </body>
+</html>

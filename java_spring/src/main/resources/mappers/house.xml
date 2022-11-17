@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.pjt.model.mapper.HouseDao">
+	<select id="selectSidoNames" resultType="map">
+		SELECT dongCode, sidoName 
+		FROM dongcode 
+		WHERE dongCode LIKE "__00000000"
+		ORDER BY dongCode
+	</select>
+	
+	<select id="selectGugunNames" parameterType="string" resultType ="map">
+		SELECT dongCode, gugunName 
+		FROM dongcode 
+		WHERE dongCode LIKE CONCAT(#{sidoCode}, "___00000") 
+		AND gugunName IS NOT NULL
+		ORDER BY dongCode
+	</select>
+	
+	<select id="selectDongNames" parameterType="string" resultType = "map">
+		SELECT dongCode, dongName 
+		FROM dongcode 
+		WHERE dongCode LIKE CONCAT(#{gugunCode}, "_____") 
+		AND dongName IS NOT NULL
+		ORDER BY dongCode
+	</select>
+	
+	<select id="selectDeals" parameterType="map" resultType="houseDto">
+		SELECT i.aptCode, i.dongCode, i.apartmentName, d.dealAmount, d.dealYear, d.dealMonth, d.dealDay, d.area, i.lng, i.lat, d.no
+		FROM housedeal d, houseinfo i
+		WHERE d.aptCode = i.aptCode
+		AND i.dongCode = #{dongCode}
+		<if test="year != null">
+			AND d.dealYear=#{year}
+		</if>
+		<if test="month != null">
+			AND d.dealMonth=#{month}
+		</if>
+	</select>
+	
+	<select id="selectInterest" parameterType="string" resultType="interestDto">
+		SELECT a.dongCode, a.user_id, d.sidoName, d.gugunName, d.dongName
+		FROM areainterest a, dongcode d
+		WHERE a.dongcode = d.dongcode
+		AND a.user_id = #{userId}
+	</select>
+	
+	<insert id="interestInsert" parameterType="map">
+		INSERT INTO areainterest (user_id, dongcode)
+		VALUES (#{userId}, #{code})
+	</insert>
+	
+	<delete id="interestDelete" parameterType="map">
+		DELETE FROM areainterest
+		WHERE user_id = #{userId} AND dongcode = #{code}
+	</delete>
+	
+	<delete id="deleteAptDeal" parameterType="string">
+		DELETE FROM housedeal
+		WHERE no LIKE #{no}
+	</delete>
+	
+	<update id="modifyAptDeal" parameterType="map">
+		UPDATE housedeal
+		SET dealAmount = #{dealAmount}, area = #{area}, dealYear = #{dealYear}, dealMonth = #{dealMonth}, dealDay = #{dealDay}
+		WHERE no = #{no}
+	</update>
+	
+	<select id="selectAptCodes" parameterType="string" resultType="string">
+		SELECT aptCode
+		FROM houseinfo
+		WHERE dongCode LIKE #{dongCode}
+	</select>
+	
+	<select id="selectAptDeals" parameterType="list"  resultType="string">
+		SELECT dealAmount
+		FROM housedeal
+		<foreach collection="list" item="aptCode" open="WHERE aptCode IN (" close=")" separator=",">
+			#{aptCode}
+		</foreach>
+	</select>
+</mapper>
