@@ -1,8 +1,10 @@
 package com.ssafy.pjt.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.pjt.model.dto.MemberDto;
+import com.ssafy.pjt.model.service.JwtServiceImpl;
 import com.ssafy.pjt.model.service.MemberService;
 
 @RestController
@@ -29,30 +32,61 @@ import com.ssafy.pjt.model.service.MemberService;
 @CrossOrigin("*")
 public class MemberRestController {
 	private final Logger logger = LoggerFactory.getLogger(MemberRestController.class);
+	private static final String SUCCESS = "sucess";
+	private static final String FAIL = "fail";
+	
+	@Autowired
 	private MemberService memberService;
+	
+	@Autowired
+	private JwtServiceImpl jwtService;
 	
 	@Autowired
 	public MemberRestController(MemberService memberService) {
 		this.memberService = memberService;
 	}
 	
+//	@ApiOperation(value = "로그인", notes = "Access-token과 로그인 결과 메세지를 반환한다.", response = Map.class)
 	@PostMapping("/login")
-	public ResponseEntity<?> login(@RequestBody Map<String, String> map, HttpSession session){
+	public ResponseEntity<Map<String, Object>> login(
+			@RequestBody MemberDto memberDto) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
 		try {
-			MemberDto selected = memberService.loginMember(map);
-
-			if (selected != null) {
-				session.setAttribute("loginUser", selected);
-				return new ResponseEntity<MemberDto>(selected, HttpStatus.OK);
+			MemberDto loginUser = memberService.loginMember(memberDto);
+			if (loginUser != null) {
+				String accessToken = jwtService.createAccessToken("userid", loginUser.getUserId());// key, data
+				String refreshToken = jwtService.createRefreshToken("userid", loginUser.getUserId());// key, data
+				memberService.saveRefreshToken(loginUser.getUserId(), refreshToken);
+				logger.debug("유저 ID 정보 : {}", loginUser.getUserId());
+				logger.debug("로그인 accessToken 정보 : {}", accessToken);
+				logger.debug("로그인 refreshToken 정보 : {}", refreshToken);
+				resultMap.put("access-token", accessToken);
+				resultMap.put("refresh-token", refreshToken);
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.ACCEPTED;
+			} else {
+				resultMap.put("message", FAIL);
+				status = HttpStatus.ACCEPTED;
 			}
-			else {
-				return new ResponseEntity<Void>(HttpStatus.UNAUTHORIZED);
-			}
+		} catch (Exception e) {
+			logger.error("로그인 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
-		catch (Exception e) {
-			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
+	
+	/*
+	 * @PostMapping("/login") public ResponseEntity<?> login(@RequestBody
+	 * Map<String, String> map, HttpSession session){ try { MemberDto selected =
+	 * memberService.loginMember(map);
+	 * 
+	 * if (selected != null) { session.setAttribute("loginUser", selected); return
+	 * new ResponseEntity<MemberDto>(selected, HttpStatus.OK); } else { return new
+	 * ResponseEntity<Void>(HttpStatus.UNAUTHORIZED); } } catch (Exception e) {
+	 * return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR); } }
+	 */
 	
 	@GetMapping("/logout")
 	public ResponseEntity<?> logout(HttpSession session) {
@@ -99,7 +133,8 @@ public class MemberRestController {
 	}
 	
 	@GetMapping("/{userId}")
-	public ResponseEntity<?> find(@PathVariable("userId") String userId){
+	public ResponseEntity<?> find(@PathVariable("userId") String userId, HttpServletRequest request){
+		if(jwtService.checkToken(request.getHeader("access-token"))) {
 		try {
 			MemberDto selected = memberService.detailMember(userId);
 			
@@ -114,12 +149,15 @@ public class MemberRestController {
 		catch (Exception e) {
 			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+		} else {
+			logger.error("사용 불가능 토큰");
+			return new ResponseEntity<Void>(HttpStatus.UNAUTHORIZED);
+		}
 	}
 	
 	@PutMapping("/{userId}")
 	public ResponseEntity<?> userModify(@RequestBody MemberDto memberDto, @PathVariable("userId") String userId) {
 		try {
-			
 			memberService.modifyMember(memberDto);
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		}

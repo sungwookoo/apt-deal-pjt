@@ -1,6 +1,7 @@
 package com.ssafy.pjt.model.service;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,8 +21,10 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 	@Override
-	public MemberDto loginMember(Map<String, String> map) throws SQLException {
-		return memberDao.loginMember(map);
+	public MemberDto loginMember(MemberDto memberDto) throws SQLException {
+		if (memberDto.getUserId() == null || memberDto.getUserPassword() == null)
+			return null;
+		return memberDao.loginMember(memberDto);
 	}
 	
 	@Override
@@ -60,4 +63,28 @@ public class MemberServiceImpl implements MemberService {
 		MemberDto dto = memberDao.adminUserInfo(id);
 		return dto;
 	}
+
+	@Override
+	public int saveRefreshToken(String userId, String refreshToken) throws Exception {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("userId", userId);
+		map.put("token", refreshToken);
+		return memberDao.saveRefreshToken(map);
+//		sqlSession.getMapper(MemberMapper.class).saveRefreshToken(map);
+	}
+	
+	@Override
+	public Object getRefreshToken(String userId) throws Exception {
+		return memberDao.getRefreshToken(userId);
+	}
+
+	@Override
+	public int deleteRefreshToken(String userId) throws Exception {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("userId", userId);
+		map.put("token", null);
+		return memberDao.deleteRefreshToken(map);
+//		sqlSession.getMapper(MemberMapper.class).deleteRefreshToken(map);
+	}
+
 }

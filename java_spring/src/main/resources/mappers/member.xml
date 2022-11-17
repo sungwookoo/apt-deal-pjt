@@ -2,51 +2,90 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.pjt.model.mapper.MemberDao">
-	<select id="loginMember" parameterType="map" resultType="memberDto">
+	<select id="loginMember" parameterType="memberDto"
+		resultType="memberDto">
 		SELECT user_id, user_name, user_type
 		FROM members
-		WHERE user_id = #{userId} AND user_password = #{userPwd}
+		WHERE
+		user_id = #{userId} AND user_password = #{userPassword}
 	</select>
-	
+
 	<insert id="joinMember" parameterType="memberDto">
-		INSERT INTO members (user_id, user_name, user_password, user_phone, email_id, email_domain, user_type)
-		VALUES (#{userId}, #{userName}, #{userPassword}, #{userPhone}, #{emailId}, #{emailDomain}, #{userType})
+		INSERT INTO members
+		(user_id, user_name, user_password, user_phone, email_id,
+		email_domain, user_type)
+		VALUES (#{userId}, #{userName},
+		#{userPassword}, #{userPhone}, #{emailId}, #{emailDomain},
+		#{userType})
 	</insert>
-	
-	<select id="findPwd" parameterType="memberDto" resultType="string">
+
+	<select id="findPwd" parameterType="memberDto"
+		resultType="string">
 		SELECT user_password
 		FROM members
-		WHERE user_id = #{userId} AND user_name = #{userName} AND user_phone = #{userPhone}
+		WHERE user_id = #{userId}
+		AND user_name = #{userName} AND user_phone = #{userPhone}
 	</select>
-	
-	<select id="detailMember" parameterType="string" resultType="memberDto">
-		SELECT user_id, user_password, user_name, email_id, email_domain, user_phone
+
+	<select id="detailMember" parameterType="string"
+		resultType="memberDto">
+		SELECT user_id, user_password, user_name, email_id,
+		email_domain, user_phone
 		FROM members
 		WHERE user_id = #{userId}
 	</select>
-	
+
 	<update id="modifyMember" parameterType="memberDto">
 		UPDATE members
-		SET user_password = #{userPassword}, user_name = #{userName}, email_id = #{emailId}, email_domain = #{emailDomain}, user_phone = #{userPhone}
+		SET
+		user_password = #{userPassword}, user_name = #{userName}, email_id =
+		#{emailId}, email_domain = #{emailDomain}, user_phone = #{userPhone}
 		WHERE user_id = #{userId}
 	</update>
-	
+
 	<delete id="deleteMember" parameterType="string">
 		DELETE FROM members
 		WHERE user_id = #{userId}
 	</delete>
-	
-	<select id="userList" parameterType="string" resultType="memberDto">
-		SELECT user_id, user_name, user_phone, email_id, email_domain, join_date, user_type
+
+	<select id="userList" parameterType="string"
+		resultType="memberDto">
+		SELECT user_id, user_name, user_phone, email_id,
+		email_domain, join_date, user_type
 		FROM members
-		WHERE user_id LIKE CONCAT("%", #{word}, "%") 
+		WHERE user_id LIKE
+		CONCAT("%", #{word}, "%")
 		ORDER BY join_date DESC
 	</select>
-	
-	<select id="adminUserInfo" parameterType="string" resultType="memberDto">
-		SELECT user_id, user_password, user_name ,email_id, email_domain, user_phone
+
+	<select id="adminUserInfo" parameterType="string"
+		resultType="memberDto">
+		SELECT user_id, user_password, user_name ,email_id,
+		email_domain, user_phone
 		FROM members
 		WHERE user_id = #{id}
 	</select>
-	
+
+	<select id="getRefreshToken" parameterType="string"
+		resultType="string">
+		select token
+		from members
+		where user_id = #{userId}
+	</select>
+
+	<update id="saveRefreshToken" parameterType="map">
+		update members
+		set token = #{token}
+		where user_id = #{userId}
+	</update>
+
+	<update id="deleteRefreshToken" parameterType="map">
+		update
+		members
+		set token = #{token, jdbcType=VARCHAR}
+		where user_id =
+		#{userId}
+	</update>
+
+
 </mapper>

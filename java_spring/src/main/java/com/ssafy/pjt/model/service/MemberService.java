@@ -8,7 +8,7 @@ import com.ssafy.pjt.model.dto.MemberDto;
 
 public interface MemberService {
 
-	MemberDto loginMember(Map<String, String> map) throws SQLException;
+	MemberDto loginMember(MemberDto memberDto) throws SQLException;
 
 	int joinMember(MemberDto memberDto) throws SQLException;
 
@@ -23,5 +23,11 @@ public interface MemberService {
 	List<MemberDto> userList(String userId) throws SQLException;
 
 	MemberDto adminUserInfo(String id) throws SQLException;
+
+	int saveRefreshToken(String userId, String refreshToken) throws Exception;
+
+	Object getRefreshToken(String userId) throws Exception;
+
+	int deleteRefreshToken(String userId) throws Exception;
 
 }
