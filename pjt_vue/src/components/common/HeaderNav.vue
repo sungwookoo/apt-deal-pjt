@@ -73,7 +73,7 @@
               ><router-link
                 :to="{ path: '#' }"
                 class="link"
-                @click.prevent="onClickLogout"
+                @click="onClickLogout"
                 >로그아웃</router-link
               ></b-dropdown-item
             >
