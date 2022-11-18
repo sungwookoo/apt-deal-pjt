@@ -101,8 +101,10 @@ export default {
       let token = sessionStorage.getItem("access-token");
       // console.log("1. confirm() token >> " + token);
       if (this.isLogin) {
+        alert("로그인 성공");
         await this.getUserInfo(token);
         // console.log("4. confirm() userInfo :: ", this.userInfo);
+        console.log(this.userInfo);
         console.log(this.userInfo + "======= 로그인 성공");
         this.$router.push({ name: "Home" });
       }

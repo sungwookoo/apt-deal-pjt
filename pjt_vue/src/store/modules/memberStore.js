@@ -8,6 +8,7 @@ import {
   logout,
   searchUserList,
   getUserDetail,
+  createUser,
 } from "@/api/members";
 
 const memberStore = {
@@ -178,6 +179,19 @@ const memberStore = {
         ({ data }) => {
           console.log(data);
           console.log(commit);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    async userJoin(context, payload) {
+      await createUser(
+        payload.user,
+        ({ status }) => {
+          if (status == 200) {
+            payload.callback();
+          }
         },
         (error) => {
           console.log(error);
