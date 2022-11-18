@@ -1,36 +1,28 @@
 <template>
-  <b-col class="m-4 user-box" style="border: solid" offset="2">
-    <b-row>
-      <b-col><h2>유저 정보</h2></b-col>
-    </b-row>
-    <b-row>
-      <b-col>아이디</b-col>
-    </b-row>
-    <b-row>
-      <b-col>비밀번호</b-col>
-    </b-row>
-    <b-row>
-      <b-col>이름</b-col>
-    </b-row>
-    <b-row>
-      <b-col>이메일(아이디 + 도메인)</b-col>
-    </b-row>
-    <b-row>
-      <b-col>휴대폰 번호</b-col>
-    </b-row>
-    <b-row>
-      <b-col>수정 버튼</b-col>
-      <b-col>삭제 버튼</b-col>
-    </b-row>
-  </b-col>
+  <detail-form :user="user"></detail-form>
 </template>
 
 <script>
-export default {};
+export default {
+  components: {
+    "detail-form": () => import("@/components/user/include/DetailForm.vue"),
+  },
+  created() {
+    console.log(this.user);
+  },
+  computed: {
+    user() {
+      return {
+        userId: "1",
+        userPassword: "2",
+        userName: "3",
+        emailId: "4",
+        emailDomain: "naver.com",
+        userPhone: "5",
+      };
+    },
+  },
+};
 </script>
 
-<style scoped>
-.user-box {
-  height: 400px;
-}
-</style>
+<style scoped></style>

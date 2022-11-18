@@ -32,7 +32,7 @@ import com.ssafy.pjt.model.service.MemberService;
 @CrossOrigin("*")
 public class MemberRestController {
 	private final Logger logger = LoggerFactory.getLogger(MemberRestController.class);
-	private static final String SUCCESS = "sucess";
+	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
 	
 	@Autowired

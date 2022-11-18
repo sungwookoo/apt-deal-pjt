@@ -7,6 +7,7 @@ import {
   tokenRegeneration,
   logout,
   searchUserList,
+  getUserDetail,
 } from "@/api/members";
 
 const memberStore = {
@@ -14,8 +15,9 @@ const memberStore = {
   state: {
     isLogin: false,
     isLoginError: false,
-    userInfo: null,
     isValidToken: false,
+    userInfo: null,
+    userDetailInfo: null,
     userList: null,
   },
   getters: {
@@ -39,6 +41,9 @@ const memberStore = {
     SET_USER_INFO: (state, userInfo) => {
       state.userInfo = userInfo;
     },
+    SET_USER_DETAIL_INFO: (state, userDetailInfo) => {
+      state.userDetailInfo = userDetailInfo;
+    },
     SET_USER_LIST: (state, userList) => {
       state.userList = userList;
     },
@@ -48,8 +53,6 @@ const memberStore = {
       await login(
         user,
         ({ data }) => {
-          alert("confirm success");
-          console.log(data);
           if (data.message === "success") {
             let accessToken = data["access-token"];
             let refreshToken = data["refresh-token"];
@@ -163,6 +166,18 @@ const memberStore = {
           } else {
             console.log("유저 목록 없음!!!!");
           }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    async getUserDetailInfo({ commit }, userid) {
+      await getUserDetail(
+        userid,
+        ({ data }) => {
+          console.log(data);
+          console.log(commit);
         },
         (error) => {
           console.log(error);

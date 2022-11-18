@@ -23,4 +23,15 @@ async function searchUserList(userid, success, fail) {
   await api.get(`/user/search?userid=${userid}`).then(success).catch(fail);
 }
 
-export { login, findById, tokenRegeneration, logout, searchUserList };
+async function getUserDetail(userid, success, fail) {
+  await api.get(`/user/${userid}`).then(success).catch(fail);
+}
+
+export {
+  login,
+  findById,
+  tokenRegeneration,
+  logout,
+  searchUserList,
+  getUserDetail,
+};
