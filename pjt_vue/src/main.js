@@ -8,12 +8,18 @@ import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 
+// vue-moment 사용
+import VueMoment from "vue-moment";
+
 // Make BootstrapVue available throughout your project
 Vue.use(BootstrapVue);
 // Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin);
 
 Vue.config.productionTip = false;
+
+// vue-moment 사용
+Vue.use(VueMoment);
 
 // 천 자리 표시 필터
 Vue.filter("filterPrice", (value) => {
