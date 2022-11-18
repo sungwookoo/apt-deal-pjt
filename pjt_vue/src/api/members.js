@@ -28,7 +28,7 @@ async function getUserDetail(userid, success, fail) {
 }
 
 async function createUser(user, success, fail) {
-  await api.post(`/user/register`, user).then(success).then(fail);
+  await api.post(`/user/register`, user).then(success).catch(fail);
 }
 
 export {
