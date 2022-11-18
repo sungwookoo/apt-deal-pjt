@@ -3,9 +3,7 @@
     <b-td>{{ no }}</b-td>
     <b-th>
       <router-link
-        :to="{
-          path: '#',
-        }"
+        :to="{ name: 'UserDetail', query: { userId: userid } }"
         class="link">
         {{ userid }}
       </router-link>

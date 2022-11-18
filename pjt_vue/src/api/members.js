@@ -24,11 +24,15 @@ async function searchUserList(userid, success, fail) {
 }
 
 async function getUserDetail(userid, success, fail) {
-  await api.get(`/user/${userid}`).then(success).catch(fail);
+  await api.get(`/user/detail/${userid}`).then(success).catch(fail);
 }
 
 async function createUser(user, success, fail) {
   await api.post(`/user/register`, user).then(success).catch(fail);
+}
+
+async function findPassword(info, success, fail) {
+  await api.post(`/user/find`, info).then(success).catch(fail);
 }
 
 export {
@@ -39,4 +43,5 @@ export {
   searchUserList,
   getUserDetail,
   createUser,
+  findPassword,
 };

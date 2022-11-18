@@ -19,7 +19,7 @@
               id="id"
               ref="id"
               type="text"
-              v-model="input.userId"
+              v-model="info.userId"
               required
               placeholder="아이디 입력..."
               readonly />
@@ -29,13 +29,32 @@
             id="pwd-group"
             label="패스워드"
             label-for="pwd">
-            <b-form-input
-              id="pwd"
-              ref="pwd"
-              type="password"
-              v-model="input.userPassword"
-              required
-              placeholder="비밀번호 입력..." />
+            <b-input-group v-if="!isPwd">
+              <b-form-input
+                id="pwd"
+                ref="pwd"
+                type="password"
+                v-model="info.userPassword"
+                required
+                readonly
+                placeholder="비밀번호 입력..." />
+              <b-button variant="outline-dark" @click="isPwdChange"
+                ><b-icon-eye-fill></b-icon-eye-fill
+              ></b-button>
+            </b-input-group>
+            <b-input-group v-else>
+              <b-form-input
+                id="pwd"
+                ref="pwd"
+                type="text"
+                v-model="info.userPassword"
+                required
+                readonly
+                placeholder="비밀번호 입력..." />
+              <b-button variant="outline-dark" @click="isPwdChange"
+                ><b-icon-eye-slash-fill></b-icon-eye-slash-fill
+              ></b-button>
+            </b-input-group>
           </b-form-group>
           <b-form-group
             label-cols="2"
@@ -46,8 +65,9 @@
               id="name"
               ref="name"
               type="text"
-              v-model="input.userName"
+              v-model="info.userName"
               required
+              readonly
               placeholder="이름 입력..." />
           </b-form-group>
           <b-form-group
@@ -55,20 +75,22 @@
             id="email-group"
             label="이메일"
             label-for="emailid">
-            <b-form-input
-              id="emailid"
-              ref="emailid"
-              type="text"
-              v-model="input.emailId"
-              required
-              placeholder="이메일 입력..." />
-            <b-input-group-append>
+            <b-input-group>
+              <b-form-input
+                id="emailid"
+                ref="emailid"
+                type="text"
+                :value="info.emailId"
+                required
+                readonly
+                placeholder="이메일 입력..." />
               <b-input-group-text>@</b-input-group-text>
               <b-form-select
                 ref="emaildomain"
-                v-model="input.emailDomain"
+                v-model="info.emailDomain"
+                disabled
                 :options="options"></b-form-select>
-            </b-input-group-append>
+            </b-input-group>
           </b-form-group>
           <b-form-group
             label-cols="2"
@@ -79,14 +101,21 @@
               id="phone"
               ref="phone"
               type="text"
-              v-model="input.userPhone"
+              v-model="info.userPhone"
+              readonly
               required
               placeholder="휴대폰 입력..." />
           </b-form-group>
-          <b-button variant="outline-primary" @click="moveUserModify">
-            회원 수정
+          <b-button class="m-1" variant="outline-success" @click="movePage">
+            홈
           </b-button>
-          <b-button variant="outline-danger">취소</b-button>
+          <b-button
+            class="m-1"
+            variant="outline-primary"
+            @click="moveUserModify">
+            수정
+          </b-button>
+          <b-button class="m-1" variant="outline-danger">삭제</b-button>
         </b-form>
       </b-col>
     </b-row>
@@ -100,6 +129,7 @@ export default {
   },
   data() {
     return {
+      isPwd: false,
       info: null,
       options: [
         { value: "", text: "도메인" },
@@ -109,14 +139,21 @@ export default {
       ],
     };
   },
-  computed: {
-    input() {
-      return { ...this.user };
-    },
+  created() {
+    this.info = { ...this.user };
   },
   methods: {
     moveUserModify() {
-      this.$router.push({ name: "UserModify", params: { user: this.input } });
+      this.$router.push({
+        name: "UserModify",
+        params: { user: this.info },
+      });
+    },
+    movePage() {
+      this.$router.push({ name: "Home" });
+    },
+    isPwdChange() {
+      this.isPwd = !this.isPwd;
     },
   },
 };

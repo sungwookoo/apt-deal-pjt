@@ -1,5 +1,5 @@
 <template>
-  <b-container class="mt-4 pt-4" style="max-height: 700px; height: 700px">
+  <b-container class="mt-4" style="max-height: 700px; height: 700px">
     <b-row
       class="justify-content-center"
       style="max-height: 700px; height: 700px"

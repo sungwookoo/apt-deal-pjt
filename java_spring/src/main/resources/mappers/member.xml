@@ -24,7 +24,9 @@
 		SELECT user_password
 		FROM members
 		WHERE user_id = #{userId}
-		AND user_name = #{userName} AND user_phone = #{userPhone}
+		AND user_name = #{userName} 
+		AND email_id = #{emailId}
+		AND email_domain = #{emailDomain}
 	</select>
 
 	<select id="detailMember" parameterType="string"

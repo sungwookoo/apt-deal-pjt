@@ -1,7 +1,11 @@
 <template>
-  <b-col class="m-4 user-box" style="border: solid" offset="2">
+  <b-col class="m-4 user-box" offset="2">
     <b-row>
-      <b-col><h2>로그인</h2></b-col>
+      <b-col>
+        <b-alert variant="secondary" show>
+          <h2>로그인</h2>
+        </b-alert>
+      </b-col>
     </b-row>
     <b-row>
       <b-col>
@@ -26,32 +30,16 @@
               placeholder="비밀번호 입력...."
               @keyup.enter="validate"></b-form-input>
           </b-form-group>
-          <!-- <b-button type="button" variant="primary" class="m-1" @click="validate"
-            >로그인</b-button
+          <b-button class="m-1" variant="outline-primary" @click="validate">
+            로그인
+          </b-button>
+          <b-button class="m-1" variant="outline-info" @click="moveCreateUser">
+            회원가입
+          </b-button>
+          <b-button class="m-1" variant="outline-success" @click="moveFindPwd"
+            >비밀번호 찾기</b-button
           >
-          <b-button
-            type="button"
-            variant="success"
-            class="m-1"
-            @click="movePage"
-            >회원가입</b-button
-          > -->
         </b-form>
-      </b-col>
-    </b-row>
-    <b-row>
-      <b-col>
-        <div @click="validate">로그인</div>
-      </b-col>
-      <b-col>
-        <router-link :to="{ name: 'UserCreate' }"> 회원가입 </router-link>
-      </b-col>
-    </b-row>
-    <b-row>
-      <b-col>
-        <router-link :to="{ name: 'UserFind' }">
-          비밀번호 찾기 버튼
-        </router-link>
       </b-col>
     </b-row>
   </b-col>
@@ -108,6 +96,12 @@ export default {
         console.log(this.userInfo + "======= 로그인 성공");
         this.$router.push({ name: "Home" });
       }
+    },
+    moveCreateUser() {
+      this.$router.push({ name: "UserCreate" });
+    },
+    moveFindPwd() {
+      this.$router.push({ name: "UserFind" });
     },
   },
 };

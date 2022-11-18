@@ -65,20 +65,20 @@
             id="email-group"
             label="이메일"
             label-for="emailid">
-            <b-form-input
-              id="emailid"
-              ref="emailid"
-              type="text"
-              v-model="input.emailId"
-              required
-              placeholder="이메일 입력..." />
-            <b-input-group-append>
+            <b-input-group>
+              <b-form-input
+                id="emailid"
+                ref="emailid"
+                type="text"
+                v-model="input.emailId"
+                required
+                placeholder="이메일 입력..." />
               <b-input-group-text>@</b-input-group-text>
               <b-form-select
                 ref="emaildomain"
                 v-model="input.emailDomain"
                 :options="options"></b-form-select>
-            </b-input-group-append>
+            </b-input-group>
           </b-form-group>
           <b-form-group
             label-cols="2"
@@ -100,10 +100,27 @@
             @click="validate">
             회원 등록
           </b-button>
-          <b-button v-else variant="outline-primary" @click="validate">
+          <b-button
+            v-else
+            class="m-1"
+            variant="outline-primary"
+            @click="validate">
             회원 수정
           </b-button>
-          <b-button variant="outline-danger" @click="moveLogin">취소</b-button>
+          <b-button
+            v-if="type == 'create'"
+            class="m-1"
+            variant="outline-danger"
+            @click="moveLogin"
+            >취소</b-button
+          >
+          <b-button
+            v-else
+            class="m-1"
+            variant="outline-danger"
+            @click="moveUserDetail"
+            >취소</b-button
+          >
         </b-form>
       </b-col>
     </b-row>
@@ -111,12 +128,11 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
-const memberStroe = "memberStore";
+import { mapActions, mapState } from "vuex";
+const memberStore = "memberStore";
 export default {
   props: {
     type: String,
-    user: Object,
   },
   data() {
     return {
@@ -129,6 +145,7 @@ export default {
     };
   },
   computed: {
+    ...mapState(memberStore, ["userDetailInfo"]),
     input() {
       if (this.type == "create") {
         return {
@@ -141,12 +158,12 @@ export default {
           userType: "0",
         };
       } else {
-        return { ...this.user };
+        return { ...this.userDetailInfo };
       }
     },
   },
   methods: {
-    ...mapActions(memberStroe, ["userJoin"]),
+    ...mapActions(memberStore, ["userJoin"]),
     validate() {
       let isValid = true;
       let errMsg = "";
@@ -201,6 +218,12 @@ export default {
     },
     moveLogin() {
       this.$router.push({ name: "UserLogin" });
+    },
+    moveUserDetail() {
+      this.$router.push({
+        name: "UserDetail",
+        query: { userId: this.input.userId },
+      });
     },
   },
 };

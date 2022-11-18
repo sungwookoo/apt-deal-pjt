@@ -9,6 +9,7 @@ import {
   searchUserList,
   getUserDetail,
   createUser,
+  findPassword,
 } from "@/api/members";
 
 const memberStore = {
@@ -173,12 +174,16 @@ const memberStore = {
         }
       );
     },
-    async getUserDetailInfo({ commit }, userid) {
+    async getUserDetailInfo({ commit }, payload) {
       await getUserDetail(
-        userid,
-        ({ data }) => {
-          console.log(data);
-          console.log(commit);
+        payload.userid,
+        ({ data, status }) => {
+          if (status == 200) {
+            console.log(data);
+            commit("SET_USER_DETAIL_INFO", data);
+          } else {
+            payload.callback();
+          }
         },
         (error) => {
           console.log(error);
@@ -196,6 +201,22 @@ const memberStore = {
         (error) => {
           console.log(error);
           alert("회원가입 실패.");
+        }
+      );
+    },
+    async pwdFind(context, payload) {
+      await findPassword(
+        payload.user,
+        ({ status, data }) => {
+          if (status == 200) {
+            payload.successCallback(data);
+          } else {
+            payload.failCallback();
+          }
+        },
+        (error) => {
+          console.log(error);
+          alert("서버 오류 발생!");
         }
       );
     },
