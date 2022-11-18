@@ -69,13 +69,8 @@
                 >로그인</router-link
               ></b-dropdown-item
             >
-            <b-dropdown-item
-              ><router-link
-                :to="{ path: '#' }"
-                class="link"
-                @click="onClickLogout"
-                >로그아웃</router-link
-              ></b-dropdown-item
+            <b-dropdown-item class="link" @click="onClickLogout"
+              >로그아웃</b-dropdown-item
             >
             <b-dropdown-item
               ><router-link :to="{ name: 'UserDetail' }" class="link"
@@ -148,6 +143,7 @@ export default {
 
 <style scoped>
 .link {
+  font-weight: bold;
   text-decoration: none;
 }
 </style>
