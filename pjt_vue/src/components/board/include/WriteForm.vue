@@ -119,14 +119,14 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["board", "userInfo"]),
+    ...mapGetters(["board", "userInfo2"]),
     input() {
       if (this.boardAction == "modify") {
         return { ...this.board };
       } else {
         return {
-          userId: this.userInfo.userId,
-          userName: this.userInfo.userName,
+          userId: this.userInfo2.userId,
+          userName: this.userInfo2.userName,
           subject: "",
           content: "",
           type: this.boardType,

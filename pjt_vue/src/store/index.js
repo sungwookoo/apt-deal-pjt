@@ -15,6 +15,12 @@ export default new Vuex.Store({
     board: {},
     searchNotice: [],
     searchQna: [],
+
+    // 유저
+    userInfo2: {
+      userId: "ssafy",
+      userName: "ssafy",
+    },
   },
   getters: {
     // 게시판(공지사항, QnA)
@@ -29,6 +35,10 @@ export default new Vuex.Store({
     },
     searchQna(state) {
       return state.searchQna;
+    },
+    // 유저
+    userInfo2(state) {
+      return state.userInfo2;
     },
   },
   mutations: {
