@@ -35,6 +35,14 @@ async function findPassword(info, success, fail) {
   await api.post(`/user/find`, info).then(success).catch(fail);
 }
 
+async function updateUser(user, success, fail) {
+  await api.put(`/user/${user.userId}`, user).then(success).catch(fail);
+}
+
+async function deleteUser(userId, success, fail) {
+  await api.delete(`/user/${userId}`).then(success).catch(fail);
+}
+
 export {
   login,
   findById,
@@ -44,4 +52,6 @@ export {
   getUserDetail,
   createUser,
   findPassword,
+  updateUser,
+  deleteUser,
 };

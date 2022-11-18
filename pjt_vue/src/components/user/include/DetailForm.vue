@@ -19,7 +19,7 @@
               id="id"
               ref="id"
               type="text"
-              v-model="info.userId"
+              v-model="userDetailInfo.userId"
               required
               placeholder="아이디 입력..."
               readonly />
@@ -34,7 +34,7 @@
                 id="pwd"
                 ref="pwd"
                 type="password"
-                v-model="info.userPassword"
+                v-model="userDetailInfo.userPassword"
                 required
                 readonly
                 placeholder="비밀번호 입력..." />
@@ -47,7 +47,7 @@
                 id="pwd"
                 ref="pwd"
                 type="text"
-                v-model="info.userPassword"
+                v-model="userDetailInfo.userPassword"
                 required
                 readonly
                 placeholder="비밀번호 입력..." />
@@ -65,7 +65,7 @@
               id="name"
               ref="name"
               type="text"
-              v-model="info.userName"
+              v-model="userDetailInfo.userName"
               required
               readonly
               placeholder="이름 입력..." />
@@ -80,14 +80,14 @@
                 id="emailid"
                 ref="emailid"
                 type="text"
-                :value="info.emailId"
+                :value="userDetailInfo.emailId"
                 required
                 readonly
                 placeholder="이메일 입력..." />
               <b-input-group-text>@</b-input-group-text>
               <b-form-select
                 ref="emaildomain"
-                v-model="info.emailDomain"
+                v-model="userDetailInfo.emailDomain"
                 disabled
                 :options="options"></b-form-select>
             </b-input-group>
@@ -101,7 +101,7 @@
               id="phone"
               ref="phone"
               type="text"
-              v-model="info.userPhone"
+              v-model="userDetailInfo.userPhone"
               readonly
               required
               placeholder="휴대폰 입력..." />
@@ -115,7 +115,9 @@
             @click="moveUserModify">
             수정
           </b-button>
-          <b-button class="m-1" variant="outline-danger">삭제</b-button>
+          <b-button class="m-1" variant="outline-danger" @click="remove"
+            >삭제</b-button
+          >
         </b-form>
       </b-col>
     </b-row>
@@ -123,6 +125,8 @@
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
+const memberStore = "memberStore";
 export default {
   props: {
     user: Object,
@@ -130,7 +134,6 @@ export default {
   data() {
     return {
       isPwd: false,
-      info: null,
       options: [
         { value: "", text: "도메인" },
         { value: "ssafy.com", text: "싸피" },
@@ -139,14 +142,12 @@ export default {
       ],
     };
   },
-  created() {
-    this.info = { ...this.user };
-  },
   methods: {
+    ...mapActions(memberStore, ["removeUser"]),
     moveUserModify() {
       this.$router.push({
         name: "UserModify",
-        params: { user: this.info },
+        params: { user: this.userDetailInfo },
       });
     },
     movePage() {
@@ -155,6 +156,14 @@ export default {
     isPwdChange() {
       this.isPwd = !this.isPwd;
     },
+
+    async remove() {
+      await this.removeUser(this.userDetailInfo.userId);
+      this.movePage();
+    },
+  },
+  computed: {
+    ...mapState(memberStore, ["userDetailInfo"]),
   },
 };
 </script>

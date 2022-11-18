@@ -99,7 +99,7 @@ export default {
       }
     },
     moveUserRegister() {
-      this.$router.push({ name: "Home" });
+      this.$router.push({ name: "UserCreate" });
     },
   },
   created() {

@@ -10,7 +10,9 @@ import {
   getUserDetail,
   createUser,
   findPassword,
-} from "@/api/members";
+  updateUser,
+  deleteUser,
+} from "@/api/member";
 
 const memberStore = {
   namespaced: true,
@@ -217,6 +219,44 @@ const memberStore = {
         (error) => {
           console.log(error);
           alert("서버 오류 발생!");
+        }
+      );
+    },
+    async userModify(context, user) {
+      await updateUser(
+        user,
+        ({ status }) => {
+          if (status == 200) {
+            console.log("유저 정보 수정 완료. =============");
+          } else {
+            console.log("유저 정보 수정 실패. =============");
+          }
+        },
+        (error) => {
+          console.log(error);
+          console.log("서버 오류 발생!===============");
+        }
+      );
+    },
+    async removeUser({ state }, userId) {
+      // 로그아웃 실행(본인 계정 삭제라면)
+      if (state.isLogin && state.userInfo.userId == userId) {
+        await logout(userId);
+      }
+
+      // 회원 삭제 실행
+      await deleteUser(
+        userId,
+        ({ status }) => {
+          if (status == 200) {
+            console.log(`유저 ${userId} 정보 삭제 완료.===========`);
+          } else {
+            console.log(`유저 ${userId} 정보 삭제 실패.===========`);
+          }
+        },
+        (error) => {
+          console.log(error);
+          console.log("서버 오류!!!!!!!");
         }
       );
     },

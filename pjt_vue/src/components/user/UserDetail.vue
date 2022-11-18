@@ -1,16 +1,11 @@
 <template>
-  <detail-form :user="userDetailInfo"></detail-form>
+  <detail-form></detail-form>
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions } from "vuex";
 const memberStore = "memberStore";
 export default {
-  data() {
-    return {
-      userId: "",
-    };
-  },
   components: {
     "detail-form": () => import("@/components/user/include/DetailForm.vue"),
   },
@@ -31,9 +26,6 @@ export default {
     movePage() {
       this.$router.push({ name: "Home" });
     },
-  },
-  computed: {
-    ...mapState(memberStore, ["userDetailInfo"]),
   },
 };
 </script>

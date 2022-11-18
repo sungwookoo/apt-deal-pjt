@@ -1,26 +1,62 @@
 <template>
   <div>
-    <b-container fluid>
+    <b-container class="text-center justify-content-center">
+      <b-row>
+        <b-col id="map"></b-col>
+      </b-row>
+      <b-row class="m-3" align-h="center">
+        <b-col cols="8">
+          <b-input-group>
+            <b-form-select
+              v-model="sidoSelected"
+              :options="sidoOptions"
+              value-field="dongCode"
+              text-field="sidoName"></b-form-select>
+            <b-form-select
+              class="ml-3"
+              v-model="gugunSelected"
+              :options="gugunOptions"
+              value-field="dongCode"
+              text-field="gugunName"></b-form-select>
+            <b-form-select
+              class="ml-3"
+              v-model="dongSelected"
+              :options="dongOptions"
+              value-field="dongCode"
+              text-field="dongName"></b-form-select>
+          </b-input-group>
+        </b-col>
+      </b-row>
       <b-row align-h="center">
-        <b-col cols="4" id="map" align-self="center"></b-col>
+        <b-col style="border: solid">
+          <div class="button-group">
+            <button @click="changeSize(0)">Hide</button>
+            <button @click="changeSize(800)">show</button>
+            <button @click="displayMarker(markerPositions1)">
+              marker set 1
+            </button>
+            <button @click="displayMarker(markerPositions2)">
+              marker set 2
+            </button>
+            <button @click="displayMarker([])">marker set 3 (empty)</button>
+            <button @click="displayInfoWindow">infowindow</button>
+          </div>
+        </b-col>
       </b-row>
     </b-container>
-    <div class="button-group">
-      <button @click="changeSize(0)">Hide</button>
-      <button @click="changeSize(400)">show</button>
-      <button @click="displayMarker(markerPositions1)">marker set 1</button>
-      <button @click="displayMarker(markerPositions2)">marker set 2</button>
-      <button @click="displayMarker([])">marker set 3 (empty)</button>
-      <button @click="displayInfoWindow">infowindow</button>
-    </div>
   </div>
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
+const houseStore = "houseStore";
 export default {
   name: "KakaoMap",
   data() {
     return {
+      sidoSelected: "",
+      gugunSelected: "",
+      dongSelected: "",
       markerPositions1: [
         [33.452278, 126.567803],
         [33.452671, 126.574792],
@@ -51,7 +87,40 @@ export default {
       document.head.appendChild(script);
     }
   },
+  created() {
+    this.getSido();
+  },
   methods: {
+    ...mapActions(houseStore, [
+      "getSidoNames",
+      "getGugunNames",
+      "getDongNames",
+      "initOptions",
+    ]),
+    // 코드 얻기
+    async getSido() {
+      await this.getSidoNames();
+    },
+    async getGugun() {
+      await this.getGugunNames(this.sidoSelected);
+      this.gugunSelected = "";
+    },
+    async getDong() {
+      await this.getDongNames(this.gugunSelected);
+      this.dongSelected = "";
+    },
+    async initSelected(name) {
+      await this.initOptions(name);
+      switch (name) {
+        case "sido":
+          this.gugunSelected = "";
+          break;
+        case "gugun":
+          this.dongSelected = "";
+          break;
+      }
+    },
+
     initMap() {
       const container = document.getElementById("map");
       const options = {
@@ -75,7 +144,8 @@ export default {
       }
 
       const positions = markerPositions.map(
-        (position) => new kakao.maps.LatLng(...position),
+        // eslint-disable-next-line prettier/prettier
+        (position) => new kakao.maps.LatLng(...position)
       );
 
       if (positions.length > 0) {
@@ -84,12 +154,14 @@ export default {
             new kakao.maps.Marker({
               map: this.map,
               position,
-            }),
+              // eslint-disable-next-line prettier/prettier
+            })
         );
 
         const bounds = positions.reduce(
           (bounds, latlng) => bounds.extend(latlng),
-          new kakao.maps.LatLngBounds(),
+          // eslint-disable-next-line prettier/prettier
+          new kakao.maps.LatLngBounds()
         );
 
         this.map.setBounds(bounds);
@@ -116,13 +188,41 @@ export default {
       this.map.setCenter(iwPosition);
     },
   },
+  computed: {
+    ...mapState(houseStore, ["sidoOptions", "gugunOptions", "dongOptions"]),
+    changeSido() {
+      console.log("시도 코드 : " + this.sidoSelected);
+      if (this.sidoSelected) {
+        this.getGugun();
+      } else {
+        this.initSelected("sido");
+      }
+      return this.sidoSelected;
+    },
+    changeGugun() {
+      console.log("구군 코드 : " + this.gugunSelected);
+      if (this.gugunSelected) {
+        this.getDong();
+      } else {
+        this.initSelected("gugun");
+      }
+      return this.gugunSelected;
+    },
+    changeDong() {
+      console.log("동 코드 : " + this.dongSelected);
+      if (this.dongSelected) {
+        console.log("매물 표시");
+      }
+      return this.dongSelected;
+    },
+  },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 #map {
-  width: 400px;
+  width: 100%;
   height: 500px;
 }
 
