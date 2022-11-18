@@ -111,6 +111,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+const memberStroe = "memberStore";
 export default {
   props: {
     type: String,
@@ -143,6 +145,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions(memberStroe, ["userJoin"]),
     validate() {
       let isValid = true;
       let errMsg = "";
@@ -176,8 +179,17 @@ export default {
       if (!isValid) {
         alert(errMsg);
       } else {
-        console.log(this.input);
+        switch (this.type) {
+          case "create":
+            this.join();
+            break;
+          case "modify":
+            break;
+        }
       }
+    },
+    async join() {
+      await this.userJoin(this.input);
     },
   },
 };

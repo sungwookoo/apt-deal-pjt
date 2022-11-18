@@ -27,6 +27,10 @@ async function getUserDetail(userid, success, fail) {
   await api.get(`/user/${userid}`).then(success).catch(fail);
 }
 
+async function createUser(user, success, fail) {
+  await api.post(`/user/register`, user).then(success).then(fail);
+}
+
 export {
   login,
   findById,
@@ -34,4 +38,5 @@ export {
   logout,
   searchUserList,
   getUserDetail,
+  createUser,
 };
