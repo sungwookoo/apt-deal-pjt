@@ -79,26 +79,17 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public int deleteRefreshToken(String userId) throws Exception {
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("userId", userId);
-		map.put("token", null);
-		return memberDao.deleteRefreshToken(map);
-//		sqlSession.getMapper(MemberMapper.class).deleteRefreshToken(map);
-	}
-
-	@Override
 	public MemberDto userInfo(String userId) throws Exception {
 		MemberDto dto = memberDao.userInfo(userId);
 		return dto;
 	}
 
 	@Override
-	public void deleRefreshToken(String userid) throws Exception {
+	public void deleteRefreshToken(String userId) throws Exception {
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("userid", userid);
+		map.put("userId", userId);
 		map.put("token", null);
-		memberDao.deleRefreshToken(map);
+		memberDao.deleteRefreshToken(map);
 //		sqlSession.getMapper(MemberMapper.class).deleteRefreshToken(map);
 	}
 

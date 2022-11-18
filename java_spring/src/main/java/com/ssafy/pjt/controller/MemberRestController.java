@@ -125,7 +125,7 @@ public class MemberRestController {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
 		try {
-			memberService.deleRefreshToken(userId);
+			memberService.deleteRefreshToken(userId);
 			resultMap.put("message", SUCCESS);
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
@@ -134,7 +134,6 @@ public class MemberRestController {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
-
 	}
 	
 	/*
@@ -242,6 +241,30 @@ public class MemberRestController {
 		catch (Exception e) {
 			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+	
+//	@ApiOperation(value = "Access Token 재발급", notes = "만료된 access token을 재발급받는다.", response = Map.class)
+	@PostMapping("/refresh")
+	public ResponseEntity<?> refreshToken(@RequestBody MemberDto memberDto, HttpServletRequest request)
+			throws Exception {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		String token = request.getHeader("refresh-token");
+		logger.debug("token : {}, memberDto : {}", token, memberDto);
+		if (jwtService.checkToken(token)) {
+			if (token.equals(memberService.getRefreshToken(memberDto.getUserId()))) {
+				String accessToken = jwtService.createAccessToken("userid", memberDto.getUserId());
+				logger.debug("token : {}", accessToken);
+				logger.debug("정상적으로 액세스토큰 재발급!!!");
+				resultMap.put("access-token", accessToken);
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.ACCEPTED;
+			}
+		} else {
+			logger.debug("리프레쉬토큰도 사용불가!!!!!!!");
+			status = HttpStatus.UNAUTHORIZED;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
 	
