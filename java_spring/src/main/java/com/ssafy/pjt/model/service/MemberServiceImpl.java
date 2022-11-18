@@ -87,4 +87,19 @@ public class MemberServiceImpl implements MemberService {
 //		sqlSession.getMapper(MemberMapper.class).deleteRefreshToken(map);
 	}
 
+	@Override
+	public MemberDto userInfo(String userId) throws Exception {
+		MemberDto dto = memberDao.userInfo(userId);
+		return dto;
+	}
+
+	@Override
+	public void deleRefreshToken(String userid) throws Exception {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("userid", userid);
+		map.put("token", null);
+		memberDao.deleRefreshToken(map);
+//		sqlSession.getMapper(MemberMapper.class).deleteRefreshToken(map);
+	}
+
 }

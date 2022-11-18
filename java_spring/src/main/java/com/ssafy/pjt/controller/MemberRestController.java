@@ -90,16 +90,59 @@ public class MemberRestController {
 	 * return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR); } }
 	 */
 	
-	@GetMapping("/logout")
-	public ResponseEntity<?> logout(HttpSession session) {
-		try {
-			session.invalidate();
-			return new ResponseEntity<Void>(HttpStatus.OK);
+	@GetMapping("/info/{userId}")
+	public ResponseEntity<Map<String, Object>> getInfo(
+			@PathVariable("userId") String userId,
+			HttpServletRequest request) {
+//		logger.debug("userId : {} ", userId);
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		if (jwtService.checkToken(request.getHeader("access-token"))) {
+			logger.info("사용 가능한 토큰!!!");
+			try {
+//				로그인 사용자 정보.
+				MemberDto memberDto = memberService.userInfo(userId);
+				resultMap.put("userInfo", memberDto);
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.ACCEPTED;
+			} catch (Exception e) {
+				logger.error("정보조회 실패 : {}", e);
+				resultMap.put("message", e.getMessage());
+				status = HttpStatus.INTERNAL_SERVER_ERROR;
+			}
+		} else {
+			logger.error("사용 불가능 토큰!!!");
+			resultMap.put("message", FAIL);
+			status = HttpStatus.UNAUTHORIZED;
 		}
-		catch (Exception e) {
-			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
+	
+	
+	
+	@GetMapping("/logout/{userId}")
+	public ResponseEntity<?> removeToken(@PathVariable("userId") String userId) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		try {
+			memberService.deleRefreshToken(userId);
+			resultMap.put("message", SUCCESS);
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			logger.error("로그아웃 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+
+	}
+	
+	/*
+	 * @GetMapping("/logout") public ResponseEntity<?> logout(HttpSession session) {
+	 * try { session.invalidate(); return new ResponseEntity<Void>(HttpStatus.OK); }
+	 * catch (Exception e) { return new
+	 * ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR); } }
+	 */
 	
 	@PostMapping("/register")
 	public ResponseEntity<?> register(@RequestBody MemberDto memberDto){

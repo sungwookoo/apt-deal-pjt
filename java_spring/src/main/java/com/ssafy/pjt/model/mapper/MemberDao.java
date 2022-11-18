@@ -24,10 +24,14 @@ public interface MemberDao {
 
 	MemberDto adminUserInfo(String id) throws SQLException;
 
-	int saveRefreshToken(Map<String, String> map);
+	int saveRefreshToken(Map<String, String> map) throws SQLException;
 
-	int deleteRefreshToken(Map<String, String> map);
+	int deleteRefreshToken(Map<String, String> map) throws SQLException;
 
-	Object getRefreshToken(String userId);
+	Object getRefreshToken(String userId) throws SQLException;
+
+	MemberDto userInfo(String userId) throws SQLException;
+
+	void deleRefreshToken(Map<String, String> map) throws SQLException;
 
 }

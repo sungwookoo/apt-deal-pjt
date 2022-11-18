@@ -30,4 +30,8 @@ public interface MemberService {
 
 	int deleteRefreshToken(String userId) throws Exception;
 
+	MemberDto userInfo(String userid) throws Exception;
+
+	void deleRefreshToken(String userId) throws Exception;
+
 }

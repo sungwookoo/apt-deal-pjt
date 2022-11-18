@@ -66,6 +66,13 @@
 		WHERE user_id = #{id}
 	</select>
 
+	<select id="userInfo" parameterType="string"
+		resultType="memberDto">
+		select user_id, user_name, user_phone, email_id, email_domain, join_date, user_type 
+		from members
+		where user_id = #{userId}
+	</select>
+
 	<select id="getRefreshToken" parameterType="string"
 		resultType="string">
 		select token
@@ -75,14 +82,16 @@
 
 	<update id="saveRefreshToken" parameterType="map">
 		update members
-		set token = #{token}
+		set
+		token = #{token}
 		where user_id = #{userId}
 	</update>
 
 	<update id="deleteRefreshToken" parameterType="map">
 		update
 		members
-		set token = #{token, jdbcType=VARCHAR}
+		set
+		token = #{token, jdbcType=VARCHAR}
 		where user_id =
 		#{userId}
 	</update>
