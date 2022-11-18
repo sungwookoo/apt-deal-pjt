@@ -103,7 +103,7 @@
           <b-button v-else variant="outline-primary" @click="validate">
             회원 수정
           </b-button>
-          <b-button variant="outline-danger">취소</b-button>
+          <b-button variant="outline-danger" @click="moveLogin">취소</b-button>
         </b-form>
       </b-col>
     </b-row>
@@ -138,6 +138,7 @@ export default {
           emailId: "",
           emailDomain: "",
           userPhone: "",
+          userType: "0",
         };
       } else {
         return { ...this.user };
@@ -181,6 +182,7 @@ export default {
       } else {
         switch (this.type) {
           case "create":
+            console.log(this.input);
             this.join();
             break;
           case "modify":
@@ -189,7 +191,16 @@ export default {
       }
     },
     async join() {
-      await this.userJoin(this.input);
+      const payload = {
+        user: this.input,
+        callback: () => {
+          this.moveLogin();
+        },
+      };
+      await this.userJoin(payload);
+    },
+    moveLogin() {
+      this.$router.push({ name: "UserLogin" });
     },
   },
 };
