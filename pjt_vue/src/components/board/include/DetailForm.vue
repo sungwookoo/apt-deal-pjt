@@ -3,17 +3,23 @@
     <b-row class="mb-1">
       <b-col>
         <b-card class="mb-2" border-variant="dark" no-body>
-          <b-card-header class="text-center">
-            <h3>제목 : {{ board.subject }}</h3>
-            <h5>번호 : {{ board.boardNo }}</h5>
+          <b-card-header class="text-left" style="height: 80px">
+            <h5>[{{ board.boardNo }}] {{ board.subject }}</h5>
             <div>
-              <h6>작성자 : {{ board.userName }}</h6>
-            </div>
-            <div>
-              <h6>조회 : {{ board.hit }}</h6>
+              <p>
+                {{ board.userName }} ({{ board.userId }})<span
+                  style="color: lightgray">
+                  &nbsp;&nbsp;|&nbsp;&nbsp;</span
+                >
+                {{ $moment(this.board.createDate).format("YYYY.MM.DD HH:mm:ss")
+                }}<span style="color: lightgray">&nbsp;&nbsp;|&nbsp;</span> 조회
+                {{ board.hit }}
+              </p>
             </div>
           </b-card-header>
-          <b-card-body class="text-left">
+          <b-card-body
+            class="text-left"
+            style="height: 400px; overflow-y: scroll">
             <div :inner-html.prop="board.content"></div>
           </b-card-body>
         </b-card>

@@ -33,7 +33,7 @@ export default {
     board: Object,
   },
   created() {
-    console.log(this.board);
+    // console.log(this.board);
   },
 };
 </script>

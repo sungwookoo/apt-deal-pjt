@@ -3,46 +3,36 @@
     <b-row align-v="center" align-h="between">
       <b-col
         v-if="type == '0'"
-        cols="2"
+        cols="3"
         align-self="center"
-        style="font-size: 20px; font-weight: bold">
-        <b-icon-bell-fill></b-icon-bell-fill>&nbsp;&nbsp;공지사항
+        style="font-size: 20px; font-weight: bold; text-align: left">
+        <b-icon-bell-fill></b-icon-bell-fill> 공지사항
       </b-col>
       <b-col
         v-else
-        cols="2"
+        cols="3"
         align-self="center"
-        style="font-size: 20px; font-weight: bold">
+        style="font-size: 20px; font-weight: bold; text-align: left">
         <b-icon-question-circle></b-icon-question-circle>&nbsp;&nbsp;QnA
       </b-col>
       <!-- <b-col cols="2" align-self="center" id="if-admin">
         <button class="btn btn-dark" @click="moveBoardCreate">공지작성</button>
       </b-col> -->
     </b-row>
-
+    <br />
     <detail-form :board="board"></detail-form>
 
     <b-row class="mb-1" style="margin-top: 10px">
       <b-col class="text-left">
-        <b-button
-          variant="outline-info"
-          size="sm"
-          @click="moveList"
-          class="mr-2"
+        <b-button size="sm" @click="moveList" class="mr-2 btn btn-dark"
           >목록</b-button
         >
       </b-col>
       <b-col class="text-right">
-        <b-button
-          variant="outline-info"
-          size="sm"
-          @click="moveModifyBoard"
-          class="mr-2"
+        <b-button size="sm" @click="moveModifyBoard" class="mr-2 btn"
           >글수정</b-button
         >
-        <b-button variant="outline-danger" size="sm" @click="deleteBtn"
-          >글삭제</b-button
-        >
+        <b-button size="sm btn" @click="deleteBtn">글삭제</b-button>
       </b-col>
     </b-row>
   </div>

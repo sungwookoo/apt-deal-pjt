@@ -3,27 +3,31 @@
     <b-row align-v="center" align-h="between">
       <b-col
         v-if="type == '0'"
-        cols="2"
+        cols="3"
         align-self="center"
-        style="font-size: 20px; font-weight: bold">
+        style="font-size: 20px; font-weight: bold; text-align: left">
         <b-icon-bell-fill></b-icon-bell-fill> 공지사항
       </b-col>
       <b-col
         v-else
-        cols="2"
+        cols="3"
         align-self="center"
-        style="font-size: 20px; font-weight: bold">
+        style="font-size: 20px; font-weight: bold; text-align: left">
         <b-icon-question-circle></b-icon-question-circle> QnA
       </b-col>
-      <b-col cols="2" align-self="center" id="if-admin">
+      <b-col
+        cols="3"
+        align-self="center"
+        id="if-admin"
+        style="text-align: right">
         <button
           v-if="type == '0'"
           class="btn btn-dark"
           @click="moveBoardCreate">
-          공지 등록
+          등록
         </button>
         <button v-else class="btn btn-dark" @click="moveBoardCreate">
-          질문 등록
+          등록
         </button>
       </b-col>
     </b-row>
@@ -36,7 +40,7 @@
               <b-th style="width: 100px">번호</b-th>
               <b-th style="width: 600px">제목</b-th>
               <b-th style="width: 200px">작성자</b-th>
-              <b-th>작성일시</b-th>
+              <b-th style="width: 200px">작성일시</b-th>
             </b-tr>
           </b-thead>
           <b-tbody>
@@ -102,12 +106,15 @@
     <br />
     <b-row align-v="center" align-h="center">
       <b-col cols="1.2">
-        <b-form-select v-model="selected" :options="options"></b-form-select>
+        <b-form-select
+          size="sm"
+          v-model="selected"
+          :options="options"></b-form-select>
       </b-col>
       <b-col cols="3">
         <b-input-group>
           <b-form-input
-            size="m"
+            size="sm"
             class=""
             placeholder="Search..."
             v-model="searchParam"

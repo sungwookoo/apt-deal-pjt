@@ -1,58 +1,79 @@
 <template>
   <div>
-    <div class="row justify-content-center">
-      <div class="col-lg-8 col-md-10 col-sm-12">
-        <h2 class="my-3 py-3 shadow-sm bg-white border text-center">
-          <div v-if="boardAction == 'create'" class="underline">글 작성</div>
-          <div v-else class="underline">글 수정</div>
-        </h2>
-      </div>
-      <div class="col-lg-8 col-md-10 col-sm-12">
-        <form id="form-register" action="">
-          <div class="mb-3">
+    <b-row align-v="center" align-h="between">
+      <b-col
+        v-if="type == '0'"
+        cols="3"
+        align-self="center"
+        style="font-size: 20px; font-weight: bold; text-align: left">
+        <b-icon-bell-fill></b-icon-bell-fill> 공지사항
+      </b-col>
+      <b-col
+        v-else
+        cols="3"
+        align-self="center"
+        style="font-size: 20px; font-weight: bold; text-align: left">
+        <b-icon-question-circle></b-icon-question-circle>&nbsp;&nbsp;QnA
+      </b-col>
+      <!-- <b-col cols="2" align-self="center" id="if-admin">
+        <button class="btn btn-dark" @click="moveBoardCreate">공지작성</button>
+      </b-col> -->
+    </b-row>
+    <br />
+    <b-row class="mb-1">
+      <b-col>
+        <b-card class="mb-2" border-variant="dark" no-body>
+          <b-card-header class="text-left" style="height: 100px">
             <label for="subject" class="form-label">제목</label>
-            <input
-              type="text"
-              class="form-control"
-              name="subject"
-              ref="subject"
-              placeholder="제목..."
-              v-model="input.subject" />
-          </div>
-          <div class="mb-3">
+            <h5>
+              <input
+                type="text"
+                class="form-control"
+                name="subject"
+                ref="subject"
+                placeholder="제목..."
+                v-model="input.subject" />
+            </h5>
+            <div></div>
+          </b-card-header>
+          <b-card-body
+            class="text-left"
+            style="height: 400px; overflow-y: scroll">
             <label for="content" class="form-label">내용</label>
             <textarea
+              style="resize: none"
               class="form-control"
               name="content"
-              rows="15"
+              rows="13"
               ref="content"
               v-model="input.content"></textarea>
-          </div>
-          <div class="col-auto text-center">
-            <button
-              v-if="this.boardAction == 'create'"
+          </b-card-body>
+        </b-card>
+        <b-row class="mb-1" style="margin-top: 10px">
+          <b-col class="text-left">
+            <b-button
               type="button"
-              class="btn btn-primary m-1"
-              @click="validate">
-              등록
-            </button>
-            <button
-              v-else
-              type="button"
-              class="btn btn-primary m-1"
-              @click="validate">
-              수정
-            </button>
-            <button
-              type="button"
-              class="btn btn-danger m-1"
+              size="sm"
+              class="mr-2 btn btn-dark"
               @click="moveList(boardType)">
               목록
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+            </b-button>
+          </b-col>
+          <b-col class="text-right">
+            <b-button
+              v-if="this.boardAction == 'create'"
+              size="sm"
+              @click="validate"
+              class="mr-2 btn"
+              >등록</b-button
+            >
+            <b-button v-else size="sm" @click="validate" class="mr-2 btn"
+              >수정</b-button
+            >
+          </b-col>
+        </b-row>
+      </b-col>
+    </b-row>
   </div>
 </template>
 
