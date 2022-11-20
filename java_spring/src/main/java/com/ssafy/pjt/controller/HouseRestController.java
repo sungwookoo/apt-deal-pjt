@@ -244,7 +244,7 @@ public class HouseRestController {
 
 				// 해당 동에서 거래된 아파트의 정보
 				List<String> aptCodeList = houseService.selectAptCodes(map.get("dongCode"));
-				System.out.println("3-" + dongName + " : " + aptCodeList.size());
+				//System.out.println("3-" + dongName + " : " + aptCodeList.size());
 
 				if (aptCodeList.size() == 0)
 					continue;

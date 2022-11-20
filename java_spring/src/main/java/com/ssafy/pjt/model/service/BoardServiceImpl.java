@@ -74,7 +74,7 @@ public class BoardServiceImpl implements BoardService {
 		int n2 = keyword.length();
 		int begin = 0, matched = 0;
 		while(begin <= n1 - n2) {
-			System.out.println(1);
+			//System.out.println(1);
 			if(matched < n2 && str.charAt(begin+matched) == keyword.charAt(matched)) {
 				++matched;
 				
