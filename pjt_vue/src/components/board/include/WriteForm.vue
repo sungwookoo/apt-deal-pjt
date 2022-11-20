@@ -2,7 +2,7 @@
   <div>
     <b-row align-v="center" align-h="between">
       <b-col
-        v-if="type == '0'"
+        v-if="boardType == '0'"
         cols="3"
         align-self="center"
         style="font-size: 20px; font-weight: bold; text-align: left">
@@ -61,7 +61,7 @@
           </b-col>
           <b-col class="text-right">
             <b-button
-              v-if="this.boardAction == 'create'"
+              v-if="boardAction == 'create'"
               size="sm"
               @click="validate"
               class="mr-2 btn"
