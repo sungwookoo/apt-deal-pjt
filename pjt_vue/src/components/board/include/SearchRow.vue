@@ -1,15 +1,34 @@
 <template>
-  <b-row
-    class="justify-content-center p-2 m-2"
-    style="height: 90px; max-height: 90px">
-    <div>{{ board }}</div>
-  </b-row>
+  <b-card
+    :title="board.subject"
+    align="left"
+    style="height: 100px; max-height: 100px"
+    @click="moveBoardDetail">
+    <b-card-text>{{
+      board.content.slice(0, 100) + (board.content.length >= 100 ? "..." : "")
+    }}</b-card-text>
+  </b-card>
 </template>
 
 <script>
 export default {
   props: {
     board: Object,
+  },
+  methods: {
+    moveBoardDetail() {
+      if (this.board.type == "0") {
+        this.$router.push({
+          name: "NoticeDetail",
+          query: { boardNo: this.board.boardNo },
+        });
+      } else {
+        this.$router.push({
+          name: "QnaDetail",
+          query: { boardNo: this.board.boardNo },
+        });
+      }
+    },
   },
 };
 </script>

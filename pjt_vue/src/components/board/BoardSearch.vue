@@ -1,17 +1,36 @@
 <template>
   <div>
     <div
-      v-if="type == '0'"
-      class="justify-content-center search-box no-scroll-board"
+      v-if="type == '0' && count == 'total'"
+      class="justify-content-center search-total-box no-scroll-board"
+      style="overflow-y: scroll">
+      <search-row
+        v-for="board in searchNotice.slice(0, 3)"
+        :key="board.boardNo"
+        :board="board"></search-row>
+    </div>
+    <div
+      v-else-if="type == '0' && count == 'all'"
+      class="justify-content-center search-all-box no-scroll-board"
       style="overflow-y: scroll">
       <search-row
         v-for="board in searchNotice"
         :key="board.boardNo"
         :board="board"></search-row>
     </div>
+    <div></div>
     <div
-      v-else
-      class="justify-content-center search-box no-scroll-board"
+      v-if="type == '1' && count == 'total'"
+      class="justify-content-center search-total-box no-scroll-board"
+      style="overflow-y: scroll">
+      <search-row
+        v-for="board in searchQna.slice(0, 3)"
+        :key="board.boardNo"
+        :board="board"></search-row>
+    </div>
+    <div
+      v-else-if="type == '1' && count == 'all'"
+      class="justify-content-center search-all-box no-scroll-board"
       style="overflow-y: scroll">
       <search-row
         v-for="board in searchQna"
@@ -26,6 +45,7 @@ import { mapGetters } from "vuex";
 export default {
   props: {
     type: String,
+    count: String,
   },
   components: {
     "search-row": () => import("@/components/board/include/SearchRow.vue"),
@@ -41,30 +61,19 @@ export default {
   display: none; /* Chrome, Safari, Opera*/
 }
 
-.search-box {
+.search-total-box {
   position: relative;
-  height: 300px;
+  height: 310px;
   width: 90%;
   border: 3px solid #000;
   margin: auto;
 }
-.search-box .legend {
-  height: 1px;
-  position: absolute;
-  top: -8px;
-  padding: 0 20px;
-  color: #000;
-  overflow: visible;
-}
 
-.search-box .legend span {
-  padding: 2px;
-  background: #f8f9fa;
-  border: 1px solid #000;
-  top: -0.5em;
+.search-all-box {
   position: relative;
-  vertical-align: middle;
-  display: inline-block;
-  overflow: visible;
+  height: 650px;
+  width: 90%;
+  border: 3px solid #000;
+  margin: auto;
 }
 </style>
