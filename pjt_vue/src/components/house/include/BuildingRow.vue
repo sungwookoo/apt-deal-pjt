@@ -59,20 +59,25 @@ export default {
         // eslint-disable-next-line prettier/prettier
         callback
       );
+    },
+  },
 
-      console.log(this.address);
-      const payload = {
-        aptCode: this.building.aptCode,
-        detail: {
-          apartmentName: this.building.apartmentName,
-          buildYear: this.building.buildYear,
-          address: this.address,
-          lat: this.building.lat,
-          lng: this.building.lng,
-        },
-      };
+  watch: {
+    address: async function (value) {
+      if (value) {
+        const payload = {
+          aptCode: this.building.aptCode,
+          detail: {
+            apartmentName: this.building.apartmentName,
+            buildYear: this.building.buildYear,
+            address: this.address,
+            lat: this.building.lat,
+            lng: this.building.lng,
+          },
+        };
 
-      await this.getBuildingDetailInfo(payload);
+        await this.getBuildingDetailInfo(payload);
+      }
     },
   },
 };
