@@ -38,6 +38,25 @@
 		</if>
 	</select>
 	
+	<!-- 매매 정보를 가져오는 SQL문. -->
+	<select id="selectBuildingInfo" parameterType="map" resultType="BuildingDto">
+		SELECT i.aptCode, i.dongCode, i.buildYear, i.apartmentName, max(d.dealAmount) as dealAmount, max(d.dealYear) as dealYear, max(d.area) as area, i.lng, i.lat
+		FROM housedeal d, houseinfo i
+		WHERE d.aptCode = i.aptCode
+		AND i.dongCode = #{dongCode}
+        GROUP BY i.aptCode
+        ORDER BY aptCode
+	</select>
+	
+	<!-- 매매 상세 정보 가져오는 SQL문 -->
+	<select id="selectBuildingDetail" parameterType="string" resultType="houseDto">
+		SELECT i.aptCode, i.dongCode, i.apartmentName, d.dealAmount, d.dealYear, d.dealMonth, d.dealDay, d.area, i.lng, i.lat, d.no
+		FROM housedeal d, houseinfo i
+		WHERE d.aptCode = i.aptCode
+		AND i.aptCode = #{aptCode}
+		ORDER BY dealYear DESC, dealMonth DESC, dealDay DESC,  no DESC
+	</select>
+	
 	<select id="selectInterest" parameterType="string" resultType="interestDto">
 		SELECT a.dongCode, a.user_id, d.sidoName, d.gugunName, d.dongName
 		FROM areainterest a, dongcode d

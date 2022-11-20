@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import com.ssafy.pjt.model.dto.BuildingDto;
 import com.ssafy.pjt.model.dto.HouseDto;
 import com.ssafy.pjt.model.dto.InterestDto;
 
@@ -16,6 +17,10 @@ public interface HouseService {
 	List<Map<String, String>> selectSidoNames() throws SQLException;
 
 	List<HouseDto> selectDeals(Map<String, String> map) throws SQLException;
+
+	List<HouseDto> selectBuildingDetail(String aptCode) throws SQLException;
+	
+	List<BuildingDto> selectBuildingInfo(Map<String, String> map) throws SQLException;
 
 	List<InterestDto> selectInterest(String userId) throws SQLException;
 

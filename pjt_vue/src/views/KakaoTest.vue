@@ -27,19 +27,63 @@
           </b-input-group>
         </b-col>
       </b-row>
-      <b-row align-h="center">
-        <b-col style="border: solid">
-          <div class="button-group">
-            <button @click="changeSize(0)">Hide</button>
-            <button @click="changeSize(800)">show</button>
-            <button @click="displayMarker(markerPositions1)">
-              marker set 1
-            </button>
-            <button @click="displayMarker(markerPositions2)">
-              marker set 2
-            </button>
-            <button @click="displayMarker([])">marker set 3 (empty)</button>
-            <button @click="displayInfoWindow">infowindow</button>
+      <b-row
+        class="mt-2"
+        style="max-height: 600px; height: 600px; border: solid">
+        <b-col class="m-1" style="max-height: 100%; border: solid">
+          <div><h2>매매 건물 정보</h2></div>
+          <div
+            v-if="buildingList.length > 0"
+            style="height: 520px; overflow: scroll"
+            class="no-scroll-board">
+            <div
+              v-for="(building, index) in buildingList"
+              :key="building.aptCode + index"
+              style="border: solid"
+              @click="
+                getbuildingDetail(
+                  building.aptCode,
+                  building.lat,
+                  building.lng,
+                  // eslint-disable-next-line prettier/prettier
+                  building
+                )
+              ">
+              <div>
+                {{
+                  building.apartmentName +
+                  "(" +
+                  building.lat.slice(0, 6) +
+                  ", " +
+                  building.lng.slice(0, 6) +
+                  ")"
+                }}
+              </div>
+              <div>건축 년도 : {{ building.buildYear }}</div>
+              <div>최대 매매 가격 : {{ building.dealAmount }}</div>
+              <div>최근 매매 년도 : {{ building.dealYear }}</div>
+              <div>최대 매매 면적 : {{ building.area }}</div>
+            </div>
+          </div>
+          <div v-else>건물 정보가 없습니다.</div>
+        </b-col>
+        <b-col class="m-1" style="max-height: 100%; border: solid">
+          <div><h2>선택 건물 상세 정보</h2></div>
+          <div v-if="buildingDetail.length > 0">
+            <div>건물명 : {{ selectBuilding.apartmentName }}</div>
+            <div>건물 년도 : {{ selectBuilding.buildYear }}</div>
+            <div>
+              건물 주소 : {{ selectBuilding.lat + ", " + selectBuilding.lng }}
+            </div>
+            <div>총 거래 횟수 : {{ buildingDetail.length }}</div>
+            <b-table
+              sticky-header="400px"
+              :items="buildingDetail"
+              :fields="detailField"
+              class="no-scroll-board"></b-table>
+          </div>
+          <div v-else>
+            <div>선택한 건물이 없습니다.</div>
           </div>
         </b-col>
       </b-row>
@@ -57,22 +101,14 @@ export default {
       sidoSelected: "",
       gugunSelected: "",
       dongSelected: "",
-      markerPositions1: [
-        [33.452278, 126.567803],
-        [33.452671, 126.574792],
-        [33.451744, 126.572441],
-      ],
-      markerPositions2: [
-        [37.499590490909185, 127.0263723554437],
-        [37.499427948430814, 127.02794423197847],
-        [37.498553760499505, 127.02882598822454],
-        [37.497625593121384, 127.02935713582038],
-        [37.49629291770947, 127.02587362608637],
-        [37.49754540521486, 127.02546694890695],
-        [37.49646391248451, 127.02675574250912],
-      ],
       markers: [],
       infowindow: null,
+      detailField: [
+        { key: "dealDate", label: "날짜" },
+        { key: "dealAmount", label: "가격(만 원)" },
+        { key: "area", label: "면적" },
+      ],
+      selectBuilding: {},
     };
   },
   mounted() {
@@ -89,6 +125,8 @@ export default {
   },
   created() {
     this.getSido();
+    this.initBuilding();
+    this.initMarker();
   },
   methods: {
     ...mapActions(houseStore, [
@@ -96,8 +134,11 @@ export default {
       "getGugunNames",
       "getDongNames",
       "initOptions",
+      "getBuildingInfo",
+      "initBuildinginfo",
+      "getBuildingDetailInfo",
     ]),
-    // 코드 얻기
+    // 주소 코드 얻기
     async getSido() {
       await this.getSidoNames();
     },
@@ -114,38 +155,38 @@ export default {
       switch (name) {
         case "sido":
           this.gugunSelected = "";
-          break;
+        // eslint-disable-next-line no-fallthrough
         case "gugun":
           this.dongSelected = "";
-          break;
       }
     },
 
-    initMap() {
-      const container = document.getElementById("map");
-      const options = {
-        center: new kakao.maps.LatLng(33.450701, 126.570667),
-        level: 5,
-      };
+    // 건물 정보 얻기
+    async getBuilding() {
+      await this.getBuildingInfo(this.dongSelected);
+    },
+    async initBuilding() {
+      await this.initBuildinginfo();
+    },
+    async getbuildingDetail(aptCode, lat, lng, building) {
+      this.moveMarker(lat, lng);
+      this.selectBuilding["apartmentName"] = building.apartmentName;
+      this.selectBuilding["buildYear"] = building.buildYear;
+      this.selectBuilding["lat"] = building.lat;
+      this.selectBuilding["lng"] = building.lng;
 
-      //지도 객체를 등록합니다.
-      //지도 객체는 반응형 관리 대상이 아니므로 initMap에서 선언합니다.
-      this.map = new kakao.maps.Map(container, options);
+      await this.getBuildingDetailInfo(aptCode);
     },
-    changeSize(size) {
-      const container = document.getElementById("map");
-      container.style.width = `${size}px`;
-      container.style.height = `${size}px`;
-      this.map.relayout();
-    },
-    displayMarker(markerPositions) {
+
+    // 마커 관련 함수
+    makeMarker() {
       if (this.markers.length > 0) {
         this.markers.forEach((marker) => marker.setMap(null));
       }
 
-      const positions = markerPositions.map(
+      const positions = this.buildingList.map(
         // eslint-disable-next-line prettier/prettier
-        (position) => new kakao.maps.LatLng(...position)
+        ({ lat, lng }) => new kakao.maps.LatLng(lat, lng)
       );
 
       if (positions.length > 0) {
@@ -166,6 +207,33 @@ export default {
 
         this.map.setBounds(bounds);
       }
+    },
+    moveMarker(lat, lng) {
+      // 이동할 위도 경도 위치를 생성합니다
+      var moveLatLon = new kakao.maps.LatLng(lat, lng);
+
+      // 지도 중심을 부드럽게 이동시킵니다
+      // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
+      this.map.setLevel(1);
+      this.map.panTo(moveLatLon);
+    },
+
+    initMap() {
+      const container = document.getElementById("map");
+      const options = {
+        center: new kakao.maps.LatLng(33.450701, 126.570667),
+        level: 5,
+      };
+
+      //지도 객체를 등록합니다.
+      //지도 객체는 반응형 관리 대상이 아니므로 initMap에서 선언합니다.
+      this.map = new kakao.maps.Map(container, options);
+    },
+    changeSize(size) {
+      const container = document.getElementById("map");
+      container.style.width = `${size}px`;
+      container.style.height = `${size}px`;
+      this.map.relayout();
     },
     displayInfoWindow() {
       if (this.infowindow && this.infowindow.getMap()) {
@@ -189,31 +257,46 @@ export default {
     },
   },
   computed: {
-    ...mapState(houseStore, ["sidoOptions", "gugunOptions", "dongOptions"]),
-    changeSido() {
-      console.log("시도 코드 : " + this.sidoSelected);
-      if (this.sidoSelected) {
+    ...mapState(houseStore, [
+      "sidoOptions",
+      "gugunOptions",
+      "dongOptions",
+      "buildingList",
+      "buildingDetail",
+    ]),
+  },
+  watch: {
+    sidoSelected: function (value) {
+      console.log("시도 코드 : " + value);
+      if (value) {
         this.getGugun();
       } else {
         this.initSelected("sido");
       }
-      return this.sidoSelected;
     },
-    changeGugun() {
-      console.log("구군 코드 : " + this.gugunSelected);
-      if (this.gugunSelected) {
+    gugunSelected: function (value) {
+      console.log("구군 코드 : " + value);
+      if (value) {
         this.getDong();
       } else {
         this.initSelected("gugun");
       }
-      return this.gugunSelected;
     },
-    changeDong() {
-      console.log("동 코드 : " + this.dongSelected);
-      if (this.dongSelected) {
+    dongSelected: function (value) {
+      console.log("동 코드 : " + value);
+      if (value) {
         console.log("매물 표시");
+        this.getBuilding();
+      } else {
+        // 건물 정보 초기화.
+        this.initBuilding();
       }
-      return this.dongSelected;
+    },
+    buildingList: function (value) {
+      if (value) {
+        // 마커 생성!
+        this.makeMarker();
+      }
     },
   },
 };
@@ -230,7 +313,7 @@ export default {
   margin: 10px 0px;
 }
 
-button {
-  margin: 0 3px;
+.no-scroll-board::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
 }
 </style>

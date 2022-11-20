@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.pjt.model.dto.BuildingDto;
 import com.ssafy.pjt.model.dto.HouseDto;
 import com.ssafy.pjt.model.dto.InterestDto;
 import com.ssafy.pjt.model.dto.MemberDto;
@@ -93,6 +94,41 @@ public class HouseRestController {
 			
 			if(list != null && list.size() > 0) {
 				return new ResponseEntity<List<HouseDto>>(list, HttpStatus.OK);
+			}else {
+				return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+			}
+			
+		}catch(Exception e) {
+			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@GetMapping("/detail/{aptCode}")
+	public ResponseEntity<?> selectBuildingDetail(@PathVariable("aptCode") String aptCode){
+		try {
+			List<HouseDto> list = houseService.selectBuildingDetail(aptCode);
+			
+			if(list != null && list.size() > 0) {
+				return new ResponseEntity<List<HouseDto>>(list, HttpStatus.OK);
+			}else {
+				return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+			}
+			
+		}catch(Exception e) {
+			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@GetMapping("/searchBuilding/{dongCode}")
+	public ResponseEntity<?> selectBuilding(@PathVariable("dongCode") String dongCode){
+		try {
+			Map<String, String> map = new HashMap<>();
+			map.put("dongCode", dongCode);
+			
+			List<BuildingDto> list = houseService.selectBuildingInfo(map);
+
+			if(list != null && list.size() > 0) {
+				return new ResponseEntity<List<BuildingDto>>(list, HttpStatus.OK);
 			}else {
 				return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 			}

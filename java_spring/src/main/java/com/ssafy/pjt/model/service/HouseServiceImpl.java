@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.pjt.model.dto.BuildingDto;
 import com.ssafy.pjt.model.dto.HouseDto;
 import com.ssafy.pjt.model.dto.InterestDto;
 import com.ssafy.pjt.model.mapper.HouseDao;
@@ -41,6 +42,16 @@ public class HouseServiceImpl implements HouseService {
 	@Override
 	public List<HouseDto> selectDeals(Map<String, String> map) throws SQLException {
 		return houseDao.selectDeals(map);
+	}
+	
+	@Override
+	public List<HouseDto> selectBuildingDetail(String aptCode) throws SQLException {
+		return houseDao.selectBuildingDetail(aptCode);
+	}
+	
+	@Override
+	public List<BuildingDto> selectBuildingInfo(Map<String, String> map) throws SQLException {
+		return houseDao.selectBuildingInfo(map);
 	}
 	
 	@Override
