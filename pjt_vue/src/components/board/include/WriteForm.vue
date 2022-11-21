@@ -83,7 +83,6 @@ export default {
     type: String,
     action: String,
   },
-  data() {},
   methods: {
     ...mapActions(["createBoard", "modifyBoard"]),
     moveList(move) {
@@ -120,7 +119,7 @@ export default {
             this.moveList(this.boardType);
           },
         };
-        if (this.boardAction == "create") {
+        if (this.action == "create") {
           this.createBoard(payload);
         } else {
           this.modifyBoard(payload);
@@ -134,7 +133,7 @@ export default {
   computed: {
     ...mapGetters(["board", "userInfo2"]),
     input() {
-      if (this.boardAction == "modify") {
+      if (this.action == "modify") {
         return { ...this.board };
       } else {
         return {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <write-form :type="type" :action="create"></write-form>
+    <write-form :type="type" action="create"></write-form>
   </div>
 </template>
 
@@ -8,9 +8,6 @@
 export default {
   props: {
     type: String,
-  },
-  created() {
-    console.log(this.type);
   },
   components: {
     "write-form": () => import("@/components/board/include/WriteForm.vue"),

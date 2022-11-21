@@ -1,6 +1,6 @@
 <template>
   <div>
-    <write-form :type="type" :action="modify"></write-form>
+    <write-form :type="type" action="modify"></write-form>
   </div>
 </template>
 
