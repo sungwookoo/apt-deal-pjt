@@ -6,6 +6,7 @@ import {
   buildingDetail,
   interestArea,
   insertInterest,
+  deleteInterest,
   dealAvg,
 } from "@/api/house";
 
@@ -29,7 +30,7 @@ const houseStore = {
     interestArea: [],
 
     // 동별 매매 평균
-    avgDealList: [1, 2, 3, 4, 5],
+    avgDealList: [],
   },
   getters: {},
   mutations: {
@@ -188,6 +189,7 @@ const houseStore = {
       await interestArea(
         userid,
         ({ status, data }) => {
+          console.log(data);
           if (status == 200) commit("SET_INTEREST_AREA", data);
           else commit("SET_INTEREST_AREA", []);
         },
@@ -206,6 +208,21 @@ const houseStore = {
         (error) => {
           console.log(error);
           console.log("서버 오류!!!");
+          // eslint-disable-next-line prettier/prettier
+        }
+      );
+    },
+    async deleteInterestArea({ dispatch }, info) {
+      await deleteInterest(
+        info,
+        async ({ status }) => {
+          if (status == 200) {
+            alert("관심 지역 삭제 완료!");
+            dispatch("getInterestArea", info.userId);
+          }
+        },
+        (error) => {
+          console.log(error);
           // eslint-disable-next-line prettier/prettier
         }
       );

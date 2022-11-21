@@ -24,7 +24,7 @@
             v-if="isLogin"
             class="ml-3"
             :state="!interest"
-            invalid-feedback="추가 불가">
+            :invalid-feedback="feedback">
             <b-button
               variant="outline-success"
               @click="validate"
@@ -60,10 +60,6 @@
         <div v-else>건물을 선택해 주세요.</div>
       </b-col>
     </b-row>
-
-    <b-form-invalid-feedback id="live-feedback">
-      Enter at least 3 letters
-    </b-form-invalid-feedback>
   </div>
 </template>
 
@@ -84,13 +80,27 @@ export default {
       gugunSelected: "",
       dongSelected: "",
       interest: false,
+      isFromInterest: false,
+      feedback: "",
     };
   },
 
   created() {
-    this.getSido();
-    this.initBuilding();
-
+    let param = this.$route.params.code;
+    if (param) {
+      this.isFromInterest = true;
+      this.sidoSelected = param.substring(0, 2).padEnd(10, "0");
+      this.gugunSelected = param.substring(0, 5).padEnd(10, "0");
+      this.dongSelected = param;
+      console.log("================");
+      console.log(this.dongSelected);
+      console.log(this.gugunSelected);
+      console.log(this.sidoSelected);
+      console.log("================");
+    } else {
+      this.getSido();
+      this.initBuilding();
+    }
     if (this.isLogin) {
       this.getInterestArea(this.userInfo.userId);
     }
@@ -115,11 +125,11 @@ export default {
     },
     async getGugun() {
       await this.getGugunNames(this.sidoSelected);
-      this.gugunSelected = "";
+      if (!this.isFromInterest) this.gugunSelected = "";
     },
     async getDong() {
       await this.getDongNames(this.gugunSelected);
-      this.dongSelected = "";
+      if (!this.isFromInterest) this.dongSelected = "";
     },
     async initSelected(name) {
       await this.initOptions(name);
@@ -148,6 +158,8 @@ export default {
     // 건물 정보 얻기
     async getBuilding() {
       await this.getBuildingInfo(this.dongSelected);
+      this.isFromInterest = false;
+      this.$route.params.code = null;
     },
     async initBuilding() {
       await this.initBuildinginfo();
@@ -172,7 +184,7 @@ export default {
       if (value) {
         this.getGugun();
       } else {
-        this.initSelected("sido");
+        if (!this.isFromInterest) this.initSelected("sido");
       }
     },
     gugunSelected: function (value) {
@@ -180,7 +192,7 @@ export default {
       if (value) {
         this.getDong();
       } else {
-        this.initSelected("gugun");
+        if (!this.isFromInterest) this.initSelected("gugun");
       }
     },
     dongSelected: function (value) {
@@ -193,10 +205,14 @@ export default {
             if (String(dongCode) == value) {
               console.log("확인!");
               this.interest = true;
+              this.feedback = "이미 추가된 지역입니다";
               break;
             }
           }
-        } else this.interest = true;
+        } else {
+          this.interest = true;
+          this.feedback = "관심 지역 상한입니다";
+        }
         this.getBuilding();
       } else {
         // 건물 정보 초기화.
