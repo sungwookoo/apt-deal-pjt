@@ -5,24 +5,32 @@
         <h2>관심지역</h2>
       </b-col>
     </b-row>
-    <b-card-group class="mt-3 justify-content-center" deck>
-      <interest-row
-        v-for="area in interestArea.slice(0, 4)"
-        :key="area.dongCode + 'interest'"
-        :area="area"></interest-row>
-    </b-card-group>
-    <b-card-group class="mt-3 justify-content-center" deck>
-      <interest-row
-        v-for="area in interestArea.slice(4, 8)"
-        :key="area.dongCode + 'interest'"
-        :area="area"></interest-row>
-    </b-card-group>
-    <b-card-group class="mt-3 justify-content-center" deck>
-      <interest-row
-        v-for="area in interestArea.slice(8)"
-        :key="area.dongCode + 'interest'"
-        :area="area"></interest-row>
-    </b-card-group>
+    <b-row
+      v-if="interestArea.length == 0"
+      align-v="center"
+      style="height: 460px">
+      <b-col> 선택한 관심 지역이 없습니다. </b-col>
+    </b-row>
+    <div v-else>
+      <b-card-group class="mt-3 justify-content-center" deck>
+        <interest-row
+          v-for="area in interestArea.slice(0, 4)"
+          :key="area.dongCode + 'interest'"
+          :area="area"></interest-row>
+      </b-card-group>
+      <b-card-group class="mt-3 justify-content-center" deck>
+        <interest-row
+          v-for="area in interestArea.slice(4, 8)"
+          :key="area.dongCode + 'interest'"
+          :area="area"></interest-row>
+      </b-card-group>
+      <b-card-group class="mt-3 justify-content-center" deck>
+        <interest-row
+          v-for="area in interestArea.slice(8)"
+          :key="area.dongCode + 'interest'"
+          :area="area"></interest-row>
+      </b-card-group>
+    </div>
   </div>
 </template>
 
