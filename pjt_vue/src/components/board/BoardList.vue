@@ -120,6 +120,7 @@
             class=""
             placeholder="Search..."
             v-model="searchParam"
+            @keyup.enter="validate"
             ref="searchParam"></b-form-input>
           <b-input-group-append>
             <b-button size="sm" class="" variant="" @click="validate"
