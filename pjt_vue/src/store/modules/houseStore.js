@@ -4,6 +4,9 @@ import {
   dongNames,
   buildingInfo,
   buildingDetail,
+  interestArea,
+  insertInterest,
+  dealAvg,
 } from "@/api/house";
 
 const houseStore = {
@@ -21,6 +24,12 @@ const houseStore = {
     buildingList: [],
     buildingDetail: null,
     buildingDetailList: [],
+
+    // 관심 지역 정보
+    interestArea: [],
+
+    // 동별 매매 평균
+    avgDealList: [1, 2, 3, 4, 5],
   },
   getters: {},
   mutations: {
@@ -60,8 +69,23 @@ const houseStore = {
       }
       state.buildingDetailList = buildingDetailList;
     },
+
+    // 관심 지역 정보
+    SET_INTEREST_AREA(state, interestArea) {
+      state.interestArea = interestArea;
+    },
+
+    // 동별 매매 평균
+    SET_AVG_DEAL(state, avgDealList) {
+      state.avgDealList = [];
+      for (let avgDeal of avgDealList) {
+        let key = Object.keys(avgDeal)[0];
+        state.avgDealList.push({ dongName: key, deal: avgDeal[key] });
+      }
+    },
   },
   actions: {
+    // 지역 코드
     async getSidoNames({ commit }) {
       await sidoNames(
         ({ status, data }) => {
@@ -115,6 +139,8 @@ const houseStore = {
           commit("INIT_DONG_NAMES");
       }
     },
+
+    // 건물 정보
     async getBuildingInfo({ commit }, dongCode) {
       await buildingInfo(
         dongCode,
@@ -155,6 +181,52 @@ const houseStore = {
           // eslint-disable-next-line prettier/prettier
         }
       );
+    },
+
+    // 관심 지역
+    async getInterestArea({ commit }, userid) {
+      await interestArea(
+        userid,
+        ({ status, data }) => {
+          if (status == 200) commit("SET_INTEREST_AREA", data);
+          else commit("SET_INTEREST_AREA", []);
+        },
+        (error) => {
+          console.log(error);
+          // eslint-disable-next-line prettier/prettier
+        }
+      );
+    },
+    async createInterestArea({ dispatch }, info) {
+      await insertInterest(
+        info,
+        async ({ status }) => {
+          if (status == 200) await dispatch("getInterestArea", info.userId);
+        },
+        (error) => {
+          console.log(error);
+          console.log("서버 오류!!!");
+          // eslint-disable-next-line prettier/prettier
+        }
+      );
+    },
+
+    // 동별 매매 평균가
+    async getAvgDeal({ commit }, dongCode) {
+      await dealAvg(
+        dongCode,
+        ({ status, data }) => {
+          if (status == 200) commit("SET_AVG_DEAL", data);
+          else commit("SET_AVG_DEAL", []);
+        },
+        (error) => {
+          console.log(error);
+          // eslint-disable-next-line prettier/prettier
+        }
+      );
+    },
+    async initAvgDeal({ commit }) {
+      await commit("SET_AVG_DEAL", []);
     },
   },
 };

@@ -20,4 +20,25 @@ async function buildingDetail(aptCode, success, fail) {
   await api.get(`/house/detail/${aptCode}`).then(success).catch(fail);
 }
 
-export { sidoNames, gugunNames, dongNames, buildingInfo, buildingDetail };
+async function interestArea(userid, success, fail) {
+  await api.get(`/house/interest/${userid}`).then(success).catch(fail);
+}
+
+async function insertInterest(info, success, fail) {
+  await api.post(`/house/interest`, info).then(success).catch(fail);
+}
+
+async function dealAvg(dongCode, success, fail) {
+  await api.get(`/house/dongDealInfo/${dongCode}`).then(success).catch(fail);
+}
+
+export {
+  sidoNames,
+  gugunNames,
+  dongNames,
+  buildingInfo,
+  buildingDetail,
+  interestArea,
+  insertInterest,
+  dealAvg,
+};

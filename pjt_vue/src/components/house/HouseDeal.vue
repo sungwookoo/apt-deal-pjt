@@ -20,6 +20,19 @@
             :options="dongOptions"
             value-field="dongCode"
             text-field="dongName"></b-form-select>
+          <b-form-group
+            v-if="isLogin"
+            class="ml-3"
+            :state="!interest"
+            invalid-feedback="추가 불가">
+            <b-button
+              variant="outline-success"
+              @click="validate"
+              :disabled="interest">
+              <b-icon-star-fill style="color: #ffd400"></b-icon-star-fill>
+              관심 지역
+            </b-button>
+          </b-form-group>
         </b-input-group>
       </b-col>
     </b-row>
@@ -47,12 +60,17 @@
         <div v-else>건물을 선택해 주세요.</div>
       </b-col>
     </b-row>
+
+    <b-form-invalid-feedback id="live-feedback">
+      Enter at least 3 letters
+    </b-form-invalid-feedback>
   </div>
 </template>
 
 <script>
 import { mapActions, mapState } from "vuex";
 const houseStore = "houseStore";
+const memberStore = "memberStore";
 export default {
   components: {
     "building-row": () => import("@/components/house/include/BuildingRow.vue"),
@@ -65,12 +83,17 @@ export default {
       sidoSelected: "",
       gugunSelected: "",
       dongSelected: "",
+      interest: false,
     };
   },
 
   created() {
     this.getSido();
     this.initBuilding();
+
+    if (this.isLogin) {
+      this.getInterestArea(this.userInfo.userId);
+    }
   },
 
   methods: {
@@ -82,6 +105,8 @@ export default {
       "getBuildingInfo",
       "initBuildinginfo",
       "getBuildingDetailInfo",
+      "getInterestArea",
+      "createInterestArea",
     ]),
 
     // 주소 코드 얻기
@@ -107,6 +132,19 @@ export default {
       }
     },
 
+    async validate() {
+      if (this.dongSelected == "") {
+        alert("동을 선택해 주세요.");
+      } else {
+        const info = {
+          userId: this.userInfo.userId,
+          code: this.dongSelected,
+        };
+        await this.createInterestArea(info);
+        this.interest = true;
+      }
+    },
+
     // 건물 정보 얻기
     async getBuilding() {
       await this.getBuildingInfo(this.dongSelected);
@@ -123,7 +161,9 @@ export default {
       "dongOptions",
       "buildingList",
       "buildingDetail",
+      "interestArea",
     ]),
+    ...mapState(memberStore, ["isLogin", "userInfo"]),
   },
 
   watch: {
@@ -145,8 +185,18 @@ export default {
     },
     dongSelected: function (value) {
       console.log("동 코드 : " + value);
+      this.interest = false;
       if (value) {
         console.log("매물 표시");
+        if (this.interestArea.length < 10) {
+          for (let { dongCode } of this.interestArea) {
+            if (String(dongCode) == value) {
+              console.log("확인!");
+              this.interest = true;
+              break;
+            }
+          }
+        } else this.interest = true;
         this.getBuilding();
       } else {
         // 건물 정보 초기화.

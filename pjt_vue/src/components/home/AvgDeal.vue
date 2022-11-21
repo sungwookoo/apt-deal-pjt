@@ -68,8 +68,10 @@ export default {
     };
   },
 
-  created() {
-    this.getSido();
+  async created() {
+    await this.initOptions();
+    await this.initAvgDeal();
+    await this.getSido();
   },
 
   methods: {
@@ -78,6 +80,7 @@ export default {
       "getGugunNames",
       "initOptions",
       "getAvgDeal",
+      "initAvgDeal",
     ]),
 
     // 주소 코드 얻기
@@ -96,11 +99,6 @@ export default {
         // eslint-disable-next-line no-fallthrough
       }
     },
-
-    // 건물 정보 얻기
-    async getBuilding() {
-      await this.getBuildingInfo(this.dongSelected);
-    },
   },
 
   computed: {
@@ -108,20 +106,18 @@ export default {
   },
 
   watch: {
-    sidoSelected: function (value) {
-      console.log("시도 코드 : " + value);
+    sidoSelected: async function (value) {
       if (value) {
-        this.getGugun();
+        await this.getGugun();
       } else {
-        this.initSelected("sido");
+        await this.initSelected("sido");
       }
     },
-    gugunSelected: function (value) {
-      console.log("구군 코드 : " + value);
+    gugunSelected: async function (value) {
       if (value) {
-        this.getDong();
+        await this.getAvgDeal(this.gugunSelected);
       } else {
-        this.initSelected("gugun");
+        await this.initAvgDeal();
       }
     },
   },

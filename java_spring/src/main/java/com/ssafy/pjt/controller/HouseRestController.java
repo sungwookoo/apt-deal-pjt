@@ -33,9 +33,9 @@ import com.ssafy.pjt.model.service.HouseService;
 @RequestMapping("/api/house")
 @CrossOrigin("*")
 public class HouseRestController {
-	
+
 	private final Logger logger = LoggerFactory.getLogger(HouseRestController.class);
-	
+
 	private HouseService houseService;
 
 	@Autowired
@@ -83,125 +83,125 @@ public class HouseRestController {
 			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 	@GetMapping("/searchDeal/{dongCode}")
-	public ResponseEntity<?> searchDeal(@PathVariable("dongCode") String dongCode){
+	public ResponseEntity<?> searchDeal(@PathVariable("dongCode") String dongCode) {
 		try {
 			Map<String, String> map = new HashMap<>();
 			map.put("dongCode", dongCode);
-			
+
 			List<HouseDto> list = houseService.selectDeals(map);
-			
-			if(list != null && list.size() > 0) {
+
+			if (list != null && list.size() > 0) {
 				return new ResponseEntity<List<HouseDto>>(list, HttpStatus.OK);
-			}else {
+			} else {
 				return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 			}
-			
-		}catch(Exception e) {
+
+		} catch (Exception e) {
 			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 	@GetMapping("/detail/{aptCode}")
-	public ResponseEntity<?> selectBuildingDetail(@PathVariable("aptCode") String aptCode){
+	public ResponseEntity<?> selectBuildingDetail(@PathVariable("aptCode") String aptCode) {
 		try {
 			List<HouseDto> list = houseService.selectBuildingDetail(aptCode);
-			
-			if(list != null && list.size() > 0) {
+
+			if (list != null && list.size() > 0) {
 				return new ResponseEntity<List<HouseDto>>(list, HttpStatus.OK);
-			}else {
+			} else {
 				return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 			}
-			
-		}catch(Exception e) {
+
+		} catch (Exception e) {
 			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 	@GetMapping("/searchBuilding/{dongCode}")
-	public ResponseEntity<?> selectBuilding(@PathVariable("dongCode") String dongCode){
+	public ResponseEntity<?> selectBuilding(@PathVariable("dongCode") String dongCode) {
 		try {
 			Map<String, String> map = new HashMap<>();
 			map.put("dongCode", dongCode);
-			
+
 			List<BuildingDto> list = houseService.selectBuildingInfo(map);
 
-			if(list != null && list.size() > 0) {
+			if (list != null && list.size() > 0) {
 				return new ResponseEntity<List<BuildingDto>>(list, HttpStatus.OK);
-			}else {
+			} else {
 				return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 			}
-			
-		}catch(Exception e) {
+
+		} catch (Exception e) {
 			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 	@GetMapping("/searchDeal/{dongCode}/{year}/{month}")
-	public ResponseEntity<?> searchDeal(@PathVariable("dongCode") String dongCode, @PathVariable(name="year", required = false) String year, @PathVariable(name="month", required=false) String month){
+	public ResponseEntity<?> searchDeal(@PathVariable("dongCode") String dongCode,
+			@PathVariable(name = "year", required = false) String year,
+			@PathVariable(name = "month", required = false) String month) {
 		try {
 			Map<String, String> map = new HashMap<>();
 			map.put("dongCode", dongCode);
 			map.put("year", year);
 			map.put("month", month);
-			
-			logger.debug("파라미터 : " + dongCode +", " + year +", " + month ); 
-			
+
+			logger.debug("파라미터 : " + dongCode + ", " + year + ", " + month);
+
 			List<HouseDto> list = houseService.selectDeals(map);
-			for(HouseDto d : list) logger.debug(d.toString());
-			
-			if(list != null && list.size() > 0) {
+			for (HouseDto d : list)
+				logger.debug(d.toString());
+
+			if (list != null && list.size() > 0) {
 				return new ResponseEntity<List<HouseDto>>(list, HttpStatus.OK);
-			}else {
+			} else {
 				return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 			}
-			
-		}catch(Exception e) {
-			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
-	
-	@PutMapping("/update")
-	public ResponseEntity<?> update(@RequestBody Map<String, String> map){
-		try {
-			houseService.modifyAptDeal(map);
-			return new ResponseEntity<Void>(HttpStatus.OK);
-		}catch(Exception e) {
-			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
-	
-	@DeleteMapping("/{no}")
-	public ResponseEntity<?> delete(@PathVariable("no") String no){
-		try {
-			houseService.deleteAptDeal(no);
-			return new ResponseEntity<Void>(HttpStatus.OK);
-			
-		}catch(Exception e) {
-			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
-	
-	@GetMapping("/interest")
-	public ResponseEntity<?> getInterest(HttpSession session) {
-		try {
-			MemberDto member = (MemberDto) session.getAttribute("loginUser");
-			if (member != null) {
-				List<InterestDto> list = houseService.selectInterest(member.getUserId());
-				
-				for(InterestDto d : list) logger.debug(d.toString());
-				
-				if(list != null && list.size() > 0) return new ResponseEntity<List<InterestDto>>(list, HttpStatus.OK);
-			}
+
 		} catch (Exception e) {
 			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
-	
+
+	@PutMapping("/update")
+	public ResponseEntity<?> update(@RequestBody Map<String, String> map) {
+		try {
+			houseService.modifyAptDeal(map);
+			return new ResponseEntity<Void>(HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@DeleteMapping("/{no}")
+	public ResponseEntity<?> delete(@PathVariable("no") String no) {
+		try {
+			houseService.deleteAptDeal(no);
+			return new ResponseEntity<Void>(HttpStatus.OK);
+
+		} catch (Exception e) {
+			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@GetMapping("/interest/{userId}")
+	public ResponseEntity<?> getInterest(@PathVariable("userId") String userId) {
+		try {
+			List<InterestDto> list = houseService.selectInterest(userId);
+
+			if (list != null && list.size() > 0)
+				return new ResponseEntity<List<InterestDto>>(list, HttpStatus.OK);
+			else
+				return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		} catch (Exception e) {
+			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
 	@PostMapping("/interest")
-	public ResponseEntity<?> insertInterest(@RequestBody Map<String, String> map){
+	public ResponseEntity<?> insertInterest(@RequestBody Map<String, String> map) {
 		try {
 			houseService.interestRegister(map);
 			return new ResponseEntity<Void>(HttpStatus.OK);
@@ -209,14 +209,15 @@ public class HouseRestController {
 			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 	@DeleteMapping("/interest/{userid}/{dongcode}")
-	public ResponseEntity<?> insertInterest(@PathVariable("userid") String userId, @PathVariable("dongcode") String dongCode){
+	public ResponseEntity<?> insertInterest(@PathVariable("userid") String userId,
+			@PathVariable("dongcode") String dongCode) {
 		try {
 			Map<String, String> map = new HashMap<>();
 			map.put("userId", userId);
 			map.put("code", dongCode);
-			
+
 			houseService.interestDelete(map);
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		} catch (Exception e) {
@@ -236,7 +237,7 @@ public class HouseRestController {
 			Map<String, Double> result = new HashMap<>();
 
 			// 동별 평균 매매 가격 계산.
-			for(Map<String, String> map : list) {
+			for (Map<String, String> map : list) {
 				// 동이름.
 				String dongName = map.get("dongName");
 				// 새로운 요소 추가
@@ -244,7 +245,7 @@ public class HouseRestController {
 
 				// 해당 동에서 거래된 아파트의 정보
 				List<String> aptCodeList = houseService.selectAptCodes(map.get("dongCode"));
-				//System.out.println("3-" + dongName + " : " + aptCodeList.size());
+				// System.out.println("3-" + dongName + " : " + aptCodeList.size());
 
 				if (aptCodeList.size() == 0)
 					continue;
