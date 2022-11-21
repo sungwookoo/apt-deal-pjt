@@ -52,7 +52,10 @@
               class="mr-sm-2"
               placeholder="Search..."
               v-model="fullSearchParam"
+              @keyup.enter="validate"
               ref="fullSearch"></b-form-input>
+            <input type="text" style="display: none" />
+
             <b-button
               size="sm"
               class="my-2 my-sm-0"
