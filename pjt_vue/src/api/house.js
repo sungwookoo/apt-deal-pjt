@@ -28,6 +28,13 @@ async function insertInterest(info, success, fail) {
   await api.post(`/house/interest`, info).then(success).catch(fail);
 }
 
+async function deleteInterest(info, success, fail) {
+  await api
+    .delete(`/house/interest/${info.userId}/${info.code}`)
+    .then(success)
+    .catch(fail);
+}
+
 async function dealAvg(dongCode, success, fail) {
   await api.get(`/house/dongDealInfo/${dongCode}`).then(success).catch(fail);
 }
@@ -40,5 +47,6 @@ export {
   buildingDetail,
   interestArea,
   insertInterest,
+  deleteInterest,
   dealAvg,
 };

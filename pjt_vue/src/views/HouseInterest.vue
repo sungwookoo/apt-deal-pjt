@@ -2,7 +2,7 @@
   <div>
     <b-container
       class="mt-4 bg-light bg-opacity-75 pt-4"
-      style="max-height: 700px; height: 700px">
+      style="max-height: 540px; height: 540px">
       <interest-com></interest-com>
     </b-container>
   </div>

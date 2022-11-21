@@ -21,7 +21,12 @@
         id="if-admin"
         style="text-align: right">
         <button
-          v-if="!(type == '0' && (!isLogin || checkUserInfo.userType == '0'))"
+          v-if="
+            !(
+              type == '0' &&
+              (!isLogin || (isLogin && checkUserInfo.userType == '0'))
+            )
+          "
           class="btn btn-dark"
           @click="moveBoardCreate">
           등록
@@ -128,7 +133,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 const memberStore = "memberStore";
 export default {
   components: {
@@ -185,7 +190,8 @@ export default {
   },
   computed: {
     ...mapGetters(["boardList"]),
-    ...mapGetters(memberStore, ["isLogin", "checkUserInfo"]),
+    ...mapGetters(memberStore, ["checkUserInfo"]),
+    ...mapState(memberStore, ["isLogin"]),
   },
   created() {
     this.getBoardList(this.type);
