@@ -21,7 +21,7 @@
         id="if-admin"
         style="text-align: right">
         <button
-          v-if="!(type == '0' && checkUserInfo.userType == '0')"
+          v-if="!(type == '0' && (!isLogin || checkUserInfo.userType == '0'))"
           class="btn btn-dark"
           @click="moveBoardCreate">
           등록
@@ -185,7 +185,7 @@ export default {
   },
   computed: {
     ...mapGetters(["boardList"]),
-    ...mapGetters(memberStore, ["checkUserInfo"]),
+    ...mapGetters(memberStore, ["isLogin", "checkUserInfo"]),
   },
   created() {
     this.getBoardList(this.type);
