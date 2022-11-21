@@ -70,12 +70,9 @@
               ></b-dropdown-item
             >
             <b-dropdown-item
-              ><router-link
-                :to="{ path: '#' }"
-                class="link"
-                @click.prevent="onClickLogout"
-                >로그아웃</router-link
-              ></b-dropdown-item
+              ><div class="link" @click.prevent="onClickLogout">
+                로그아웃
+              </div></b-dropdown-item
             >
             <b-dropdown-item
               ><router-link :to="{ name: 'UserDetail' }" class="link"
@@ -131,11 +128,11 @@ export default {
       }
     },
     onClickLogout() {
-      console.log(this.userInfo.userid);
+      console.log(this.userInfo.userId);
       //vuex actions에서 userLogout 실행(Backend에 저장 된 리프레시 토큰 없애기
       //+ satate에 isLogin, userInfo 정보 변경)
       // this.$store.dispatch("userLogout", this.userInfo.userid);
-      this.userLogout(this.userInfo.userid);
+      this.userLogout(this.userInfo.userId);
       sessionStorage.removeItem("access-token"); //저장된 토큰 없애기
       sessionStorage.removeItem("refresh-token"); //저장된 토큰 없애기
       alert("로그아웃 완료.");
@@ -149,5 +146,9 @@ export default {
 <style scoped>
 .link {
   text-decoration: none;
+  font-weight: bold;
+}
+.link:hover {
+  cursor: pointer;
 }
 </style>

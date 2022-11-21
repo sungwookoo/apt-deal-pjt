@@ -55,7 +55,7 @@
               type="button"
               size="sm"
               class="mr-2 btn btn-dark"
-              @click="moveList(boardType)">
+              @click="moveList(type)">
               목록
             </b-button>
           </b-col>
@@ -115,8 +115,7 @@ export default {
         const payload = {
           board: this.input,
           callback: () => {
-            console.log("callback!! 호출", this);
-            this.moveList(this.boardType);
+            this.moveList(this.type);
           },
         };
         if (this.action == "create") {
@@ -141,7 +140,7 @@ export default {
           userName: this.userInfo2.userName,
           subject: "",
           content: "",
-          type: this.boardType,
+          type: this.type,
         };
       }
     },

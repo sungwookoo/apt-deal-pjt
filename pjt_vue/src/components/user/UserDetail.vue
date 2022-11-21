@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 const memberStore = "memberStore";
 export default {
   components: {
@@ -11,7 +11,7 @@ export default {
   },
   created() {
     const payload = {
-      userid: this.$route.query.userId,
+      userid: this.detailUserId,
       callback: () => {
         this.movePage();
       },
@@ -19,13 +19,17 @@ export default {
     this.userDetail(payload);
   },
   methods: {
-    ...mapActions(memberStore, ["getUserDetailInfo"]),
+    ...mapActions(memberStore, ["getUserDetailInfo", "initDetailUser"]),
     async userDetail(payload) {
       await this.getUserDetailInfo(payload);
     },
-    movePage() {
+    async movePage() {
+      await this.initDetailUser();
       this.$router.push({ name: "Home" });
     },
+  },
+  computed: {
+    ...mapState(memberStore, ["detailUserId"]),
   },
 };
 </script>

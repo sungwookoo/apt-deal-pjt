@@ -1,12 +1,8 @@
 <template>
   <b-tr class="text-center">
     <b-td>{{ no }}</b-td>
-    <b-th>
-      <router-link
-        :to="{ name: 'UserDetail', query: { userId: userid } }"
-        class="link">
-        {{ userid }}
-      </router-link>
+    <b-th class="link" @click="moveUserDetail">
+      {{ userid }}
     </b-th>
     <b-td>
       {{ username }}
@@ -19,6 +15,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+const memberStore = "memberStore";
 export default {
   // 부모 component로 부터 전달받은 도서정보
   props: {
@@ -30,6 +28,13 @@ export default {
     userregtime: String,
     usertype: String,
   },
+  methods: {
+    ...mapActions(memberStore, ["setDetailUser"]),
+    async moveUserDetail() {
+      await this.setDetailUser(this.userid);
+      this.$router.push({ name: "UserDetail" });
+    },
+  },
 };
 </script>
 
@@ -37,5 +42,8 @@ export default {
 .link {
   text-decoration: none;
   color: black;
+}
+.link:hover {
+  cursor: pointer;
 }
 </style>

@@ -23,6 +23,7 @@ const memberStore = {
     userInfo: null,
     userDetailInfo: null,
     userList: null,
+    detailUserId: "",
   },
   getters: {
     checkUserInfo: function (state) {
@@ -50,6 +51,12 @@ const memberStore = {
     },
     SET_USER_LIST: (state, userList) => {
       state.userList = userList;
+    },
+    SET_DETAIL_USERID: (state, userid) => {
+      state.detailUserId = userid;
+    },
+    INIT_DETAIL_USERID: (state) => {
+      state.detailUserId = "";
     },
   },
   actions: {
@@ -259,6 +266,13 @@ const memberStore = {
           console.log("서버 오류!!!!!!!");
         }
       );
+    },
+    async setDetailUser({ commit }, userid) {
+      await commit("SET_DETAIL_USERID", userid);
+    },
+
+    async initDetailUser({ commit }) {
+      await commit("INIT_DETAIL_USERID");
     },
   },
 };

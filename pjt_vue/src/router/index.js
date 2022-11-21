@@ -1,7 +1,27 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
+import store from "@/store";
+
 Vue.use(VueRouter);
+
+const authUser = async (to, from, next) => {
+  const checkUserInfo = store.getters["memberStore/checkUserInfo"];
+  const checkToken = store.getters["memberStore/checkToken"];
+  let token = sessionStorage.getItem("access-token");
+  if (checkUserInfo != null && token) {
+    await store.dispatch("memberStore/getUserInfo", token);
+  }
+  if (
+    !checkToken ||
+    checkUserInfo === null ||
+    (to.name === "UserList" && checkUserInfo.userType == 0)
+  ) {
+    alert("접근 권한이 없습니다.");
+  } else {
+    next();
+  }
+};
 
 const routes = [
   {
@@ -12,6 +32,7 @@ const routes = [
   {
     path: "/kakao",
     name: "kakao",
+    beforeEnter: authUser,
     component: () => import("@/views/KakaoTest.vue"),
   },
   {
@@ -33,16 +54,19 @@ const routes = [
       {
         path: "detail",
         name: "QnaDetail",
+        beforeEnter: authUser,
         component: () => import("@/components/board/BoardDetail.vue"),
       },
       {
         path: "create",
         name: "QnaCreate",
+        beforeEnter: authUser,
         component: () => import("@/components/board/BoardCreate.vue"),
       },
       {
         path: "modify",
         name: "QnaModify",
+        beforeEnter: authUser,
         component: () => import("@/components/board/BoardModify.vue"),
       },
     ],
@@ -61,16 +85,19 @@ const routes = [
       {
         path: "detail",
         name: "NoticeDetail",
+        beforeEnter: authUser,
         component: () => import("@/components/board/BoardDetail.vue"),
       },
       {
         path: "create",
         name: "NoticeCreate",
+        beforeEnter: authUser,
         component: () => import("@/components/board/BoardCreate.vue"),
       },
       {
         path: "modify",
         name: "NoticeModify",
+        beforeEnter: authUser,
         component: () => import("@/components/board/BoardModify.vue"),
       },
     ],
@@ -105,11 +132,13 @@ const routes = [
           {
             path: "modify",
             name: "UserModify",
+            beforeEnter: authUser,
             component: () => import("@/components/user/UserModify.vue"),
           },
           {
             path: "detail",
             name: "UserDetail",
+            beforeEnter: authUser,
             component: () => import("@/components/user/UserDetail.vue"),
           },
           {
@@ -122,6 +151,7 @@ const routes = [
       {
         path: "list",
         name: "UserList",
+        beforeEnter: authUser,
         component: () => import("@/components/user/UserList.vue"),
       },
     ],
