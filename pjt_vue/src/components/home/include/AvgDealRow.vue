@@ -1,9 +1,10 @@
 <template>
-  <tr>
+  <tr v-if="deal.deal != 0">
+    <td>{{ index + 1 }}</td>
     <td>
       {{ deal.dongName }}
     </td>
-    <td>
+    <td style="text-align: right">
       {{ parseFloat(deal.deal).toFixed(2) }}
     </td>
   </tr>
@@ -13,6 +14,7 @@
 export default {
   props: {
     deal: Object,
+    index: Number,
   },
 };
 </script>

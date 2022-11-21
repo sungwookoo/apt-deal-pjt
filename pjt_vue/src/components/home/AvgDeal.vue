@@ -1,23 +1,33 @@
 <template>
   <div>
-    <b-row align-v="center" align-h="between">
+    <b-row align-v="center" align-h="between" class="mt-5">
       <b-col
-        cols="5"
+        cols="12"
         align-self="center"
         style="font-size: 20px; font-weight: bold; text-align: left">
-        <b-icon-calculator></b-icon-calculator> 매매평균
+        <b-icon-calculator></b-icon-calculator> 동별 매매 평균가 TOP 5
+      </b-col>
+    </b-row>
+    <b-row align-v="center" align-h="between" class="mt-3">
+      <b-col
+        cols="12"
+        align-self="center"
+        style="font-size: 15px; font-weight: bold; text-align: left">
+        데이터가 없는 동은 표시되지 않습니다.
       </b-col>
     </b-row>
     <br />
     <b-row class="m-1" align-h="center">
-      <b-col cols="10">
+      <b-col cols="12">
         <b-input-group>
           <b-form-select
+            size="sm"
             v-model="sidoSelected"
             :options="sidoOptions"
             value-field="dongCode"
             text-field="sidoName"></b-form-select>
           <b-form-select
+            size="sm"
             class="ml-3"
             v-model="gugunSelected"
             :options="gugunOptions"
@@ -32,20 +42,23 @@
         </b-input-group>
       </b-col>
     </b-row>
+    <br />
     <b-row style="height: 500px; overflow: scroll" class="no-scroll-board">
       <b-col v-if="avgDealList.length">
         <b-table-simple hover responsive>
           <b-thead head-variant="dark">
             <b-tr>
-              <b-th style="width: 100px">동</b-th>
-              <b-th style="width: 600px">매매평균가</b-th>
+              <b-th style="width: 50px">#</b-th>
+              <b-th style="width: 300px">동</b-th>
+              <b-th style="width: 300px">매매 평균가</b-th>
             </b-tr>
           </b-thead>
           <b-tbody>
             <deal-row
-              v-for="deal in avgDealList"
+              v-for="(deal, index) in avgDealList"
               :key="deal.dongName"
-              :deal="deal">
+              :deal="deal"
+              :index="index">
             </deal-row>
           </b-tbody>
         </b-table-simple>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-container>
-      <b-row>
+      <b-row style="height: 550px">
         <b-col cols="6">
           <b-row
             style="height: 380px"
@@ -28,23 +28,22 @@
           </b-row>
         </b-col>
       </b-row>
-
-      <b-row class="mt-5">
-        <b-col cols="4">
+      <b-row class="mt-5" style="justify-content: center">
+        <b-col cols="3">
           <p>
             <router-link :to="{ name: 'Deal' }" class="home-icon">
               <b-icon icon="geo-alt-fill" color="skyblue"></b-icon>
             </router-link>
           </p>
         </b-col>
-        <b-col cols="4">
+        <b-col cols="3">
           <p>
             <router-link :to="{ name: 'Notice' }" class="home-icon">
               <b-icon icon="bell-fill" color="orange"></b-icon>
             </router-link>
           </p>
         </b-col>
-        <b-col cols="4">
+        <b-col cols="3">
           <p>
             <router-link :to="{ name: 'Qna' }" class="home-icon">
               <b-icon icon="question-circle" color="purple"></b-icon>
