@@ -42,7 +42,7 @@
           style="margin-right: 10px"
           href="#"
           variant="primary"
-          :to="{ name: 'UserDetail' }"
+          @click="moveUserDetail"
           >정보변경</b-button
         >
         <b-button
@@ -65,7 +65,7 @@ export default {
     ...mapState(memberStore, ["userInfo", "isLogin"]),
   },
   methods: {
-    ...mapActions(memberStore, ["userLogout"]),
+    ...mapActions(memberStore, ["userLogout", "setDetailUser"]),
     onClickLogout() {
       console.log(this.userInfo.userId);
       //vuex actions에서 userLogout 실행(Backend에 저장 된 리프레시 토큰 없애기
@@ -77,6 +77,10 @@ export default {
       alert("로그아웃 완료.");
       console.log("로그아웃===================");
       if (this.$route.path != "/") this.$router.push({ name: "Home" });
+    },
+    async moveUserDetail() {
+      await this.setDetailUser(this.userInfo.userId);
+      this.$router.push({ name: "UserDetail" });
     },
   },
 };

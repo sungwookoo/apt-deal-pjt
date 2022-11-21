@@ -43,7 +43,7 @@
       </b-col>
     </b-row>
     <br />
-    <b-row style="height: 500px; overflow: scroll" class="no-scroll-board">
+    <b-row style="height: 100%; overflow: scroll" class="no-scroll-board">
       <b-col v-if="avgDealList.length">
         <b-table-simple hover responsive>
           <b-thead head-variant="dark">
@@ -53,7 +53,7 @@
               <b-th style="width: 300px">매매 평균가</b-th>
             </b-tr>
           </b-thead>
-          <b-tbody>
+          <b-tbody style="height: 100%; border: 1px solid lightgray">
             <deal-row
               v-for="(deal, index) in avgDealList"
               :key="deal.dongName"
