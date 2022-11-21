@@ -21,12 +21,9 @@
         id="if-admin"
         style="text-align: right">
         <button
-          v-if="type == '0'"
+          v-if="!(type == '0' && checkUserInfo.userType == '0')"
           class="btn btn-dark"
           @click="moveBoardCreate">
-          등록
-        </button>
-        <button v-else class="btn btn-dark" @click="moveBoardCreate">
           등록
         </button>
       </b-col>
@@ -132,6 +129,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+const memberStore = "memberStore";
 export default {
   components: {
     "board-row": () => import("@/components/board/include/BoardRow.vue"),
@@ -187,6 +185,7 @@ export default {
   },
   computed: {
     ...mapGetters(["boardList"]),
+    ...mapGetters(memberStore, ["checkUserInfo"]),
   },
   created() {
     this.getBoardList(this.type);

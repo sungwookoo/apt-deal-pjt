@@ -29,7 +29,7 @@
       <b-row class="mt-5">
         <b-col cols="4">
           <p>
-            <router-link :to="{ name: 'Home' }" class="home-icon">
+            <router-link :to="{ name: 'Deal' }" class="home-icon">
               <b-icon icon="geo-alt-fill" color="skyblue"></b-icon>
             </router-link>
           </p>

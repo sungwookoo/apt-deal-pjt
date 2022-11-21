@@ -28,11 +28,16 @@
           >목록</b-button
         >
       </b-col>
-      <b-col class="text-right">
+      <b-col class="text-right" v-if="board.userId == checkUserInfo.userId">
         <b-button size="sm" @click="moveModifyBoard" class="mr-2 btn"
           >글수정</b-button
         >
-        <b-button size="sm btn" @click="deleteBtn">글삭제</b-button>
+        <b-button
+          size="sm btn"
+          @click="deleteBtn"
+          v-if="board.userId == checkUserInfo.userId"
+          >글삭제</b-button
+        >
       </b-col>
     </b-row>
   </div>
@@ -40,6 +45,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+const memberStore = "memberStore";
 export default {
   name: "BoardDetail",
   components: {
@@ -50,6 +56,7 @@ export default {
   },
   computed: {
     ...mapGetters(["board"]),
+    ...mapGetters(memberStore, ["checkUserInfo"]),
     message() {
       if (this.board.content)
         return this.board.content.split("\n").join("<br>");

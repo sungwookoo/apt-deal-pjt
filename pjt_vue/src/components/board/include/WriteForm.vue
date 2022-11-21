@@ -78,6 +78,7 @@
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
+const memberStore = "memberStore";
 export default {
   props: {
     type: String,
@@ -130,14 +131,15 @@ export default {
   created() {},
 
   computed: {
-    ...mapGetters(["board", "userInfo2"]),
+    ...mapGetters(["board"]),
+    ...mapGetters(memberStore, ["checkUserInfo"]),
     input() {
       if (this.action == "modify") {
         return { ...this.board };
       } else {
         return {
-          userId: this.userInfo2.userId,
-          userName: this.userInfo2.userName,
+          userId: this.checkUserInfo.userId,
+          userName: this.checkUserInfo.userName,
           subject: "",
           content: "",
           type: this.type,

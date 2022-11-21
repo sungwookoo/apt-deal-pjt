@@ -16,12 +16,6 @@ export default new Vuex.Store({
     board: {},
     searchNotice: [],
     searchQna: [],
-
-    // 유저
-    userInfo2: {
-      userId: "ssafy",
-      userName: "ssafy",
-    },
   },
   getters: {
     // 게시판(공지사항, QnA)

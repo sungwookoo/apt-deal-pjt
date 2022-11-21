@@ -16,7 +16,9 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
           <b-nav-item
-            ><router-link to="/" class="link">매매검색</router-link></b-nav-item
+            ><router-link :to="{ name: 'Deal' }" class="link"
+              >매매검색</router-link
+            ></b-nav-item
           >
           <b-nav-item
             ><router-link :to="{ name: 'Notice' }" class="link"
@@ -150,5 +152,6 @@ export default {
 }
 .link:hover {
   cursor: pointer;
+  color: #007bff;
 }
 </style>
