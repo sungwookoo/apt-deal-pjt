@@ -34,7 +34,7 @@ public interface HouseDao {
 
 	List<String> selectAptCodes(String dongCode) throws SQLException;
 
-	List<String> selectAptDeals(List<String> aptCode) throws SQLException;
+	List<String> selectAptDeals(String code) throws SQLException;
 	
 	
 

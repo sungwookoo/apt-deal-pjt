@@ -34,6 +34,6 @@ public interface HouseService {
 
 	List<String> selectAptCodes(String dongCode) throws SQLException;
 
-	List<String> selectAptDeals(List<String> aptCodeList) throws SQLException;
+	List<String> selectAptDeals(String code) throws SQLException;
 
 }

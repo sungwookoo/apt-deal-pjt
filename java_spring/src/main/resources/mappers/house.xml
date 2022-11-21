@@ -91,11 +91,10 @@
 		WHERE dongCode LIKE #{dongCode}
 	</select>
 	
-	<select id="selectAptDeals" parameterType="list"  resultType="string">
-		SELECT dealAmount
-		FROM housedeal
-		<foreach collection="list" item="aptCode" open="WHERE aptCode IN (" close=")" separator=",">
-			#{aptCode}
-		</foreach>
+	<select id="selectAptDeals" parameterType="string"  resultType="string">
+		SELECT d.dealAmount
+		FROM housedeal d, houseinfo i
+		WHERE d.aptCode = i.aptCode
+		AND dongCode = #{code};
 	</select>
 </mapper>

@@ -244,25 +244,26 @@ public class HouseRestController {
 				result.put(dongName, 0.0);
 
 				// 해당 동에서 거래된 아파트의 정보
-				List<String> aptCodeList = houseService.selectAptCodes(map.get("dongCode"));
+//				List<String> aptCodeList = houseService.selectAptCodes(map.get("dongCode"));
 				// System.out.println("3-" + dongName + " : " + aptCodeList.size());
 
-				if (aptCodeList.size() == 0)
-					continue;
+//				if (aptCodeList.size() == 0)
+//					continue;
 
-				// 아파트별 매매 가격
-				List<String> dealList = houseService.selectAptDeals(aptCodeList);
+				// 동별별 매매 가격
+				List<String> dealList = houseService.selectAptDeals(map.get("dongCode"));
 				int cnt = dealList.size();
 
 				// 아파트 매매 가격 추가
+				double sum = 0;
 				for (String origin : dealList) {
 					double deal = Double.parseDouble(origin.replaceAll(",", ""));
-					result.put(dongName, result.get(dongName) + deal);
+					sum += deal;
 				}
 
 				// 평균 계산.
 				if (cnt != 0)
-					result.put(dongName, result.get(dongName) / cnt);
+					result.put(dongName, sum / cnt);
 
 			}
 
@@ -271,10 +272,11 @@ public class HouseRestController {
 			quick(entries, 0, entries.size() - 1);
 
 			if (list != null && list.size() > 0)
-				return new ResponseEntity<List<Map.Entry<String, Double>>>(entries.subList(0, 5), HttpStatus.OK);
+				return new ResponseEntity<List<Map.Entry<String, Double>>>(entries.subList(0, Math.min(5, list.size())), HttpStatus.OK);
 			else
 				return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
+			logger.debug(e.toString());
 			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}

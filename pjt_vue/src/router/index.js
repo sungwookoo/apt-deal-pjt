@@ -30,15 +30,15 @@ const routes = [
     component: () => import("@/views/HomeView.vue"),
   },
   {
-    path: "/kakao",
-    name: "kakao",
-    beforeEnter: authUser,
-    component: () => import("@/views/KakaoTest.vue"),
-  },
-  {
     path: "/deal",
     name: "Deal",
     component: () => import("@/views/HouseDealView.vue"),
+  },
+  {
+    path: "/interest",
+    name: "Interest",
+    beforeEnter: authUser,
+    component: () => import("@/views/HouseInterest.vue"),
   },
   {
     path: "/qna",

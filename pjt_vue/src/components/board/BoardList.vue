@@ -29,9 +29,9 @@
       </b-col>
     </b-row>
     <br />
-    <b-row style="height: 500px; overflow: scroll" class="no-scroll-board">
+    <b-row>
       <b-col v-if="boardList.length">
-        <b-table-simple hover responsive>
+        <b-table-simple class="no-scroll-board" hover sticky-header="500px">
           <b-thead head-variant="dark">
             <b-tr>
               <b-th style="width: 100px">번호</b-th>

@@ -87,7 +87,7 @@ public class HouseServiceImpl implements HouseService {
 	}
 	
 	@Override
-	public List<String> selectAptDeals(List<String> aptCodes) throws SQLException {
-		return houseDao.selectAptDeals(aptCodes);
+	public List<String> selectAptDeals(String code) throws SQLException {
+		return houseDao.selectAptDeals(code);
 	}
 }
