@@ -2,8 +2,11 @@
   <div>
     <b-container>
       <b-row>
-        <b-col>
-          <b-row class="justify-content-center home-logo" align-v="center">
+        <b-col cols="6">
+          <b-row
+            style="height: 380px"
+            class="justify-content-center home-logo"
+            align-v="center">
             <b-col>
               <img
                 src="@/assets/home.png"
@@ -11,13 +14,13 @@
                 alt="home-img"
             /></b-col>
           </b-row>
-          <b-row>
+          <b-row style="height: 170px">
             <b-col cols="12" class="home-login">
               <login-com></login-com>
             </b-col>
           </b-row>
         </b-col>
-        <b-col>
+        <b-col cols="6">
           <b-row class="justify-content-center">
             <b-col cols="11" offset-md="1" class="home-avg">
               <avg-deal></avg-deal>
@@ -69,14 +72,14 @@ export default {
 }
 
 .home-login {
-  height: 250px;
-  border: 1px solid black;
+  /* height: 250px;
+  border: 1px solid black; */
 }
 
-.home-avg {
+/* .home-avg {
   height: 550px;
   border: 1px solid black;
-}
+} */
 
 .home-logo {
   height: 300px;
@@ -85,7 +88,8 @@ export default {
 }
 
 .home-img {
-  height: 280px;
+  width: 100%;
+  height: 100%;
 }
 
 .test {
