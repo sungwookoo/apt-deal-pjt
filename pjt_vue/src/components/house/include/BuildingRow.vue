@@ -44,10 +44,6 @@ export default {
 
       let callback = (result, status) => {
         if (status === window.kakao.maps.services.Status.OK) {
-          console.log(
-            // eslint-disable-next-line prettier/prettier
-            "카카오 주소 획득==========" + result[0]["address"].address_name
-          );
           this.address = result[0]["address"].address_name;
         }
         // eslint-disable-next-line prettier/prettier

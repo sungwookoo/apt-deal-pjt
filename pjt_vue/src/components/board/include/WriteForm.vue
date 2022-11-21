@@ -2,7 +2,7 @@
   <div>
     <b-row align-v="center" align-h="between">
       <b-col
-        v-if="boardType == '0'"
+        v-if="type == '0'"
         cols="3"
         align-self="center"
         style="font-size: 20px; font-weight: bold; text-align: left">
@@ -61,7 +61,7 @@
           </b-col>
           <b-col class="text-right">
             <b-button
-              v-if="boardAction == 'create'"
+              v-if="action == 'create'"
               size="sm"
               @click="validate"
               class="mr-2 btn"
@@ -76,19 +76,14 @@
     </b-row>
   </div>
 </template>
-
 <script>
 import { mapActions, mapGetters } from "vuex";
 export default {
   props: {
     type: String,
+    action: String,
   },
-  data() {
-    return {
-      boardType: "",
-      boardAction: "",
-    };
-  },
+  data() {},
   methods: {
     ...mapActions(["createBoard", "modifyBoard"]),
     moveList(move) {
@@ -134,10 +129,7 @@ export default {
     },
   },
 
-  created() {
-    this.boardType = this.type.split(" ")[0];
-    this.boardAction = this.type.split(" ")[1];
-  },
+  created() {},
 
   computed: {
     ...mapGetters(["board", "userInfo2"]),
