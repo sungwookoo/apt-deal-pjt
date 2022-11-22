@@ -1,6 +1,8 @@
 <template>
   <div>
-    <b-container>
+    <b-container
+      class="mt-4 bg-light bg-opacity-75 pt-4"
+      style="max-height: 730px; height: 730px">
       <b-row style="height: 550px">
         <b-col cols="6">
           <b-row
@@ -22,7 +24,7 @@
         </b-col>
         <b-col cols="6">
           <b-row class="justify-content-center">
-            <b-col cols="11" offset-md="1" class="home-avg">
+            <b-col cols="12" offset-md="1" class="home-avg ml-0">
               <avg-deal></avg-deal>
             </b-col>
           </b-row>
