@@ -31,10 +31,17 @@
           @click="moveBoardCreate">
           등록
         </button>
+        <button
+          v-else
+          class="btn btn-dark"
+          style="visibility: hidden"
+          @click="moveBoardCreate">
+          등록
+        </button>
       </b-col>
     </b-row>
     <br />
-    <b-row>
+    <b-row style="height: 520px">
       <b-col v-if="boardList.length">
         <b-table-simple class="no-scroll-board" hover sticky-header="500px">
           <b-thead head-variant="dark">
@@ -86,7 +93,7 @@
       <board-row v-for="board in boardList" :key="board.boardNo" :board="board">
       </board-row>
     </div> -->
-    <div class="d-flex justify-content-center mt-3">
+    <div class="d-flex justify-content-center mt-0">
       <button class="btn btn-dark me-3">◀</button>
       <span
         class="text-black mx-2 align-self-center text-decoration-none"
