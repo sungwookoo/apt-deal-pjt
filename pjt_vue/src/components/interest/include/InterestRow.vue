@@ -1,29 +1,41 @@
 <template>
   <b-card
     v-if="!isClick"
-    border-variant="primary"
-    header-bg-variant="primary"
+    class="mr-4 ml-4 mb-2"
+    border-variant="dark"
+    header-bg-variant="dark"
     header-text-variant="white"
     header-class="header-font"
-    :header="area.dongCode"
-    style="max-width: 22%; height: 130px"
+    :header="'관심 지역 # ' + index"
+    style="max-width: 35%; height: 100px"
     @click="cardClick">
     <b-card-text class="mt-0">{{ address }}</b-card-text>
   </b-card>
   <b-card
     v-else
+    class="mr-4 ml-4 mb-2"
     border-variant="primary"
     header-bg-variant="primary"
     header-text-variant="white"
     header-class="header-font"
     :header="area.dongCode"
-    style="max-width: 22%; height: 130px"
+    style="max-width: 35%; height: 100px"
     @click="cardClick">
     <b-card-text>
-      <b-button class="mr-1" variant="outline-primary" @click="moveDealPage">
+      <b-button
+        size="sm"
+        class="mr-1"
+        variant="outline-primary"
+        style="width: 100px"
+        @click="moveDealPage">
         이동
       </b-button>
-      <b-button class="ml-1" variant="outline-danger" @click="deleteInterest">
+      <b-button
+        size="sm"
+        class="ml-1"
+        variant="outline-danger"
+        style="width: 100px"
+        @click="deleteInterest">
         삭제
       </b-button>
     </b-card-text>
@@ -36,6 +48,7 @@ const houseStore = "houseStore";
 export default {
   props: {
     area: Object,
+    index: Number,
   },
   data() {
     return {
@@ -75,5 +88,8 @@ export default {
 <style scoped>
 .header-font {
   font-weight: bold;
+}
+.card-body {
+  padding-top: 10px;
 }
 </style>
