@@ -18,7 +18,7 @@
     header-bg-variant="primary"
     header-text-variant="white"
     header-class="header-font"
-    :header="area.dongCode"
+    :header="'관심 지역 # ' + index"
     style="max-width: 35%; height: 100px"
     @click="cardClick">
     <b-card-text>
