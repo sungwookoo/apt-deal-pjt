@@ -106,18 +106,54 @@
               required
               placeholder="휴대폰 입력..." />
           </b-form-group>
-          <b-button class="m-1" variant="outline-success" @click="movePage">
-            홈
-          </b-button>
-          <b-button
-            class="m-1"
-            variant="outline-primary"
-            @click="moveUserModify">
-            수정
-          </b-button>
-          <b-button class="m-1" variant="outline-danger" @click="remove"
-            >삭제</b-button
-          >
+          <b-row>
+            <b-button class="m-1" variant="outline-success" @click="movePage">
+              홈
+            </b-button>
+            <b-button
+              class="m-1"
+              variant="outline-primary"
+              @click="moveUserModify">
+              수정
+            </b-button>
+            <b-button class="m-1" variant="outline-danger" @click="remove"
+              >삭제</b-button
+            >
+            <b-row v-if="!isNaver" align-v="center">
+              <b-col cols="1" id="naverIdLogin"></b-col>
+              <b-col
+                cols="7"
+                style="
+                  height: 40px;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  font-weight: bold;
+                  color: white;
+                  margin-left: 26px;
+                  background-color: #1ec800;
+                ">
+                연동 하기
+              </b-col>
+            </b-row>
+            <b-row v-else align-v="center">
+              <b-col cols="1" id="naverIdLogin" class="no-pointer"></b-col>
+              <b-col
+                cols="7"
+                style="
+                  height: 40px;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  font-weight: bold;
+                  color: white;
+                  margin-left: 26px;
+                  background-color: #1ec800;
+                ">
+                연동 완료
+              </b-col>
+            </b-row>
+          </b-row>
         </b-form>
       </b-col>
     </b-row>
@@ -128,9 +164,19 @@
 import { mapActions, mapState } from "vuex";
 const memberStore = "memberStore";
 export default {
+  mounted() {
+    const naverLogin = new window.naver.LoginWithNaverId({
+      clientId: process.env.VUE_APP_NAVER_LOGIN_CLIENT_ID,
+      callbackUrl: process.env.VUE_APP_NAVER_CONNECT_CALLBACK_URL,
+      loginButton: { color: "green", type: 1, height: 40 },
+    });
+    naverLogin.init();
+  },
+
   props: {
     user: Object,
   },
+  created() {},
   data() {
     return {
       isPwd: false,
@@ -164,6 +210,9 @@ export default {
   },
   computed: {
     ...mapState(memberStore, ["userDetailInfo"]),
+    isNaver() {
+      return this.userDetailInfo.naverId == null ? false : true;
+    },
   },
 };
 </script>
@@ -171,5 +220,8 @@ export default {
 <style scoped>
 .user-box {
   height: 400px;
+}
+.no-pointer {
+  pointer-events: none;
 }
 </style>

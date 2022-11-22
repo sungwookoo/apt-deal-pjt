@@ -243,5 +243,56 @@ public class MemberRestController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
+	
+	// Naver 연동 로그인
+	@GetMapping("/naver/{id}")
+	public ResponseEntity<?> naverLogin(@PathVariable("id") String naverId) throws Exception{
+		try {
+			logger.debug("Naver 연동 아이디 확인 : " + naverId);
+			String userId = memberService.loginNaver(naverId);
+
+			Map<String, Object> resultMap = new HashMap<>();
+			if(userId != null) {
+				String accessToken = jwtService.createAccessToken("userid", userId);// key, data
+				String refreshToken = jwtService.createRefreshToken("userid", userId);// key, data
+				memberService.saveRefreshToken(userId, refreshToken);
+				logger.debug("유저 ID 정보 : {}", userId);
+				logger.debug("로그인 accessToken 정보 : {}", accessToken);
+				logger.debug("로그인 refreshToken 정보 : {}", refreshToken);
+				resultMap.put("access-token", accessToken);
+				resultMap.put("refresh-token", refreshToken);
+				resultMap.put("message", SUCCESS);
+				
+				return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
+				
+			}else {
+				resultMap.put("message", FAIL);
+				return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
+			}
+		}catch (Exception e){
+			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	// Naver 연동 하기
+	@PutMapping("/naver")
+	public ResponseEntity<?> naverConnect(@RequestBody MemberDto memberDto) throws Exception{
+		try {
+			boolean isNaver = memberService.loginNaver(memberDto.getNaverId()) == null ? false : true;
+			Map<String, Object> resultMap = new HashMap<>();
+			if(isNaver) {
+				resultMap.put("message", FAIL);
+				return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
+			}else {
+				memberService.connectNaver(memberDto);
+				
+				resultMap.put("message", SUCCESS);
+				return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
+			}
+			
+		} catch (Exception e) {
+			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 
 }

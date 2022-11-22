@@ -31,8 +31,7 @@
 
 	<select id="detailMember" parameterType="string"
 		resultType="memberDto">
-		SELECT user_id, user_password, user_name, email_id,
-		email_domain, user_phone
+		SELECT user_id, user_password, user_name, email_id, email_domain, user_phone, naver_id
 		FROM members
 		WHERE user_id = #{userId}
 	</select>
@@ -98,5 +97,16 @@
 		#{userId}
 	</update>
 
+	<select id="loginNaver" parameterType="string" resultType="string">
+		SELECT user_id
+		FROM members
+		WHERE naver_id = #{id}
+	</select>
+	
+	<update id="connectNaver" parameterType="memberDto">
+		UPDATE members
+		SET naver_id = #{naverId}
+		WHERE user_id = #{userId}
+	</update>
 
 </mapper>

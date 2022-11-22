@@ -9,11 +9,12 @@ public class MemberDto {
 	private String emailDomain;
 	private String joinDate;
 	private String userType;
+	private String naverId;
 	
 	public MemberDto() {}
 
 	public MemberDto(String userId, String userName, String userPassword, String userPhone, String emailId,
-			String emailDomain, String joinDate, String userType) {
+			String emailDomain, String joinDate, String userType, String naverId) {
 		super();
 		this.userId = userId;
 		this.userName = userName;
@@ -23,6 +24,7 @@ public class MemberDto {
 		this.emailDomain = emailDomain;
 		this.joinDate = joinDate;
 		this.userType = userType;
+		this.naverId = naverId;
 	}
 
 	public String getUserId() {
@@ -89,6 +91,14 @@ public class MemberDto {
 		this.userType = userType;
 	}
 
+	public String getNaverId() {
+		return naverId;
+	}
+
+	public void setNaverId(String naverId) {
+		this.naverId = naverId;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -108,7 +118,10 @@ public class MemberDto {
 		builder.append(joinDate);
 		builder.append(", userType=");
 		builder.append(userType);
+		builder.append(", naverId=");
+		builder.append(naverId);
 		builder.append("]");
 		return builder.toString();
 	}
+	
 }

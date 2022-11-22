@@ -92,5 +92,15 @@ public class MemberServiceImpl implements MemberService {
 		memberDao.deleteRefreshToken(map);
 //		sqlSession.getMapper(MemberMapper.class).deleteRefreshToken(map);
 	}
+	
+	@Override
+	public String loginNaver(String id) {
+		return memberDao.loginNaver(id);
+	}
+	
+	@Override
+	public int connectNaver(MemberDto memberDto) {
+		return memberDao.connectNaver(memberDto);
+	}
 
 }

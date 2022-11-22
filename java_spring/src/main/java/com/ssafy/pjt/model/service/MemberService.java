@@ -32,4 +32,8 @@ public interface MemberService {
 
 	void deleteRefreshToken(String userId) throws Exception;
 
+	String loginNaver(String id);
+
+	int connectNaver(MemberDto memberDto);
+
 }

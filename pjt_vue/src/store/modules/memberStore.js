@@ -3,6 +3,8 @@ import jwtDecode from "jwt-decode";
 import router from "@/router";
 import {
   login,
+  snsLogin,
+  snsConnect,
   findById,
   tokenRegeneration,
   logout,
@@ -77,6 +79,47 @@ const memberStore = {
             commit("SET_IS_LOGIN", false);
             commit("SET_IS_LOGIN_ERROR", true);
             commit("SET_IS_VALID_TOKEN", false);
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    async userSnsConfirm({ commit }, payload) {
+      await snsLogin(
+        payload.userId,
+        ({ data }) => {
+          if (data.message === "success") {
+            let accessToken = data["access-token"];
+            let refreshToken = data["refresh-token"];
+            // console.log("login success token created!!!! >> ", accessToken, refreshToken);
+            commit("SET_IS_LOGIN", true);
+            commit("SET_IS_LOGIN_ERROR", false);
+            commit("SET_IS_VALID_TOKEN", true);
+            sessionStorage.setItem("access-token", accessToken);
+            sessionStorage.setItem("refresh-token", refreshToken);
+          } else {
+            commit("SET_IS_LOGIN", false);
+            commit("SET_IS_LOGIN_ERROR", true);
+            commit("SET_IS_VALID_TOKEN", false);
+            payload.failCallback();
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    async userSnsConnect({ dispatch, state }, payload) {
+      await snsConnect(
+        payload.info,
+        ({ data }) => {
+          if (data.message === "success") {
+            dispatch("setDetailUser", state.userInfo.userId);
+            router.push({ name: "UserDetail" });
+          } else {
+            payload.failCallback();
           }
         },
         (error) => {

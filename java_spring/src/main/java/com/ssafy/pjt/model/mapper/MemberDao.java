@@ -32,4 +32,8 @@ public interface MemberDao {
 
 	void deleteRefreshToken(Map<String, String> map) throws SQLException;
 
+	String loginNaver(String id);
+
+	int connectNaver(MemberDto memberDto);
+
 }

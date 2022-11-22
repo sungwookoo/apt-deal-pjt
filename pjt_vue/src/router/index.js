@@ -125,6 +125,16 @@ const routes = [
             component: () => import("@/components/user/UserLogin.vue"),
           },
           {
+            path: "sns",
+            name: "UserSnsLogin",
+            component: () => import("@/components/user/UserSnsLogin.vue"),
+          },
+          {
+            path: "connect",
+            name: "UserSnsConnect",
+            component: () => import("@/components/user/UserSnsConnect.vue"),
+          },
+          {
             path: "create",
             name: "UserCreate",
             component: () => import("@/components/user/UserCreate.vue"),

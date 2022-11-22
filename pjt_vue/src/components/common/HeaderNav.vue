@@ -77,15 +77,13 @@
               ></b-dropdown-item
             >
             <b-dropdown-item
-              ><div class="link" @click.prevent="onClickLogout">
+              ><div class="link" @click="onClickLogout">
                 로그아웃
               </div></b-dropdown-item
             >
             <b-dropdown-item
-              ><router-link :to="{ name: 'UserDetail' }" class="link"
-                >회원 정보</router-link
-              ></b-dropdown-item
-            >
+              ><div class="link" @click="moveMyDetail">회원 정보</div>
+            </b-dropdown-item>
             <b-dropdown-item
               ><router-link :to="{ name: 'UserList' }" class="link"
                 >회원 목록</router-link
@@ -112,7 +110,7 @@ export default {
     ...mapGetters(["checkUserInfo"]),
   },
   methods: {
-    ...mapActions(memberStore, ["userLogout"]),
+    ...mapActions(memberStore, ["userLogout", "setDetailUser"]),
     validate() {
       let isValid = true;
       let errMsg = "";
@@ -145,6 +143,10 @@ export default {
       alert("로그아웃 완료.");
       console.log("로그아웃===================");
       if (this.$route.path != "/") this.$router.push({ name: "Home" });
+    },
+    async moveMyDetail() {
+      this.setDetailUser(this.userInfo.userId);
+      this.$router.push({ name: "UserDetail" });
     },
   },
 };

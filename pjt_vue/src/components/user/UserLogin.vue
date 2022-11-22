@@ -39,6 +39,7 @@
           <b-button class="m-1" variant="outline-success" @click="moveFindPwd"
             >비밀번호 찾기</b-button
           >
+          <div class="m-1" id="naverIdLogin"></div>
         </b-form>
       </b-col>
     </b-row>
@@ -49,6 +50,15 @@
 import { mapState, mapActions } from "vuex";
 const memberStore = "memberStore";
 export default {
+  mounted() {
+    const naverLogin = new window.naver.LoginWithNaverId({
+      clientId: process.env.VUE_APP_NAVER_LOGIN_CLIENT_ID,
+      callbackUrl: process.env.VUE_APP_NAVER_LOGIN_CALLBACK_URL,
+      loginButton: { color: "green", type: 3, height: 40 },
+    });
+    naverLogin.init();
+  },
+
   data() {
     return {
       user: {

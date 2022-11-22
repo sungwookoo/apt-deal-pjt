@@ -7,13 +7,15 @@
             <strong>구해줘! 홈즈</strong>에 오신것을 환영합니다
           </h6>
         </template>
-        <b-button
-          style="width: 30%"
-          href="#"
-          variant="primary"
-          :to="{ name: 'UserLogin' }"
-          >로그인</b-button
-        >
+        <b-row class="justify-content-center" align-v="center">
+          <b-button
+            style="width: 30%"
+            href="#"
+            variant="primary"
+            :to="{ name: 'UserLogin' }"
+            >로그인</b-button
+          >
+        </b-row>
         <template #footer>
           <span>
             구해줘! 홈즈가 처음이신가요?
@@ -74,6 +76,7 @@ export default {
       this.userLogout(this.userInfo.userId);
       sessionStorage.removeItem("access-token"); //저장된 토큰 없애기
       sessionStorage.removeItem("refresh-token"); //저장된 토큰 없애기
+
       alert("로그아웃 완료.");
       console.log("로그아웃===================");
       if (this.$route.path != "/") this.$router.push({ name: "Home" });

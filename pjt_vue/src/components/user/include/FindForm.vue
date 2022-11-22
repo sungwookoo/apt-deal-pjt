@@ -120,32 +120,26 @@ export default {
           user: this.user,
           successCallback: (data) => {
             setTimeout(() => {
-              this.$bvToast.toast(
-                `비밀번호 찾기에 성공하였습니다. 비밀번호 : ${data} `,
-                {
-                  title: "비밀번호 찾기",
-                  variant: "success",
-                  toaster: "b-toaster-bottom-center",
-                  autoHideDelay: 1500,
-                  solid: true,
-                  // eslint-disable-next-line prettier/prettier
-                }
-              );
-            }, 100);
-            this.movePage();
-          },
-          failCallback: () => {
-            this.$bvToast.toast(
-              `비밀번호 찾기에 실패하였습니다. 다시 시도해 주세요`,
-              {
+              this.$bvToast.toast(`비밀번호 찾기 성공. 비밀번호 : ${data} `, {
                 title: "비밀번호 찾기",
-                variant: "danger",
+                variant: "success",
                 toaster: "b-toaster-bottom-center",
                 autoHideDelay: 1500,
                 solid: true,
                 // eslint-disable-next-line prettier/prettier
-              }
-            );
+              });
+            }, 100);
+            this.movePage();
+          },
+          failCallback: () => {
+            this.$bvToast.toast(`비밀번호 찾기 실패.`, {
+              title: "비밀번호 찾기",
+              variant: "danger",
+              toaster: "b-toaster-bottom-center",
+              autoHideDelay: 1500,
+              solid: true,
+              // eslint-disable-next-line prettier/prettier
+            });
           },
         };
         this.findPwd(payload);
