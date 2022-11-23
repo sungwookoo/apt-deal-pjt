@@ -15,6 +15,16 @@
     <div>최근 매매 년도 : {{ building.dealYear }}</div>
     <div>최대 매매 면적 : {{ building.area }}</div>
   </div>
+  <!-- 
+    https://bootstrap-vue.org/play
+    <div style="text-align:left; border:solid; padding:10px; width:60%;">
+      <div style="text-align:center; font-weight:bold; font-size:24px">아파트 이름</div>
+      <div>건축 년도 :</div>
+      <div>최대 매매 가격 :</div>
+      <div>최근 매매 년도 :</div>
+      <div>최대 매매 면적 :</div>
+    </div>
+  -->
 </template>
 
 <script>

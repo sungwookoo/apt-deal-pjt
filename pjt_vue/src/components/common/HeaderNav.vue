@@ -30,15 +30,7 @@
               >QnA</router-link
             ></b-nav-item
           >
-          <b-nav-item
-            ><router-link to="/" class="link"
-              >오늘의 뉴스</router-link
-            ></b-nav-item
-          >
-          <b-nav-item
-            ><router-link to="/" class="link">자유글</router-link></b-nav-item
-          >
-          <b-nav-item
+          <b-nav-item v-if="isLogin"
             ><router-link :to="{ name: 'Interest' }" class="link"
               >관심지역</router-link
             ></b-nav-item
@@ -66,25 +58,29 @@
           </b-nav-form>
 
           <b-nav-item-dropdown right>
-            <b-dropdown-item
-              ><router-link :to="{ name: 'UserCreate' }" class="link"
-                >회원가입</router-link
-              ></b-dropdown-item
-            >
-            <b-dropdown-item
-              ><router-link :to="{ name: 'UserLogin' }" class="link"
-                >로그인</router-link
-              ></b-dropdown-item
-            >
-            <b-dropdown-item
-              ><div class="link" @click="onClickLogout">
-                로그아웃
-              </div></b-dropdown-item
-            >
-            <b-dropdown-item
-              ><div class="link" @click="moveMyDetail">회원 정보</div>
-            </b-dropdown-item>
-            <b-dropdown-item
+            <div v-if="!isLogin">
+              <b-dropdown-item
+                ><router-link :to="{ name: 'UserCreate' }" class="link"
+                  >회원가입</router-link
+                ></b-dropdown-item
+              >
+              <b-dropdown-item
+                ><router-link :to="{ name: 'UserLogin' }" class="link"
+                  >로그인</router-link
+                ></b-dropdown-item
+              >
+            </div>
+            <div v-else>
+              <b-dropdown-item
+                ><div class="link" @click="onClickLogout">
+                  로그아웃
+                </div></b-dropdown-item
+              >
+              <b-dropdown-item
+                ><div class="link" @click="moveMyDetail">회원 정보</div>
+              </b-dropdown-item>
+            </div>
+            <b-dropdown-item v-if="isLogin && userInfo.userType == '1'"
               ><router-link :to="{ name: 'UserList' }" class="link"
                 >회원 목록</router-link
               ></b-dropdown-item
