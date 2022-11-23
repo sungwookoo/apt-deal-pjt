@@ -40,10 +40,31 @@
 	
 	<!-- 매매 정보를 가져오는 SQL문. -->
 	<select id="selectBuildingInfo" parameterType="map" resultType="BuildingDto">
-		SELECT i.aptCode, i.dongCode, i.buildYear, i.apartmentName, max(d.dealAmount) as dealAmount, max(d.dealYear) as dealYear, max(d.area) as area, i.lng, i.lat
-		FROM housedeal d, houseinfo i
-		WHERE d.aptCode = i.aptCode
-		AND i.dongCode = #{dongCode}
+		SELECT i.aptCode,
+			    i.dongCode,
+			    i.buildYear,
+			    i.apartmentName,
+			    CONCAT(dc.sidoName,
+			            ' ',
+			            dc.gugunName,
+			            ' ',
+			            dc.dongName,
+			            ' ') AS address,
+				TRIM(LEADING '0' FROM i.bonbun) AS bonbun ,
+				TRIM(LEADING '0' FROM i.bubun) AS bubun,
+			    MAX(d.dealAmount) AS dealAmount,
+			    MAX(d.dealYear) AS dealYear,
+			    MAX(d.area) AS area,
+			    i.lng,
+			    i.lat
+		FROM
+		    housedeal d,
+		    houseinfo i,
+		    dongcode dc
+		WHERE
+		    d.aptCode = i.aptCode
+        AND i.dongCode = #{dongCode}
+        AND i.dongCode = dc.dongCode
         GROUP BY i.aptCode
         ORDER BY aptCode
 	</select>

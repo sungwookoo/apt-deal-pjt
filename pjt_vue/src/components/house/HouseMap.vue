@@ -11,6 +11,7 @@ export default {
   data() {
     return {
       markers: [],
+      map: null,
     };
   },
 
@@ -72,6 +73,72 @@ export default {
         );
 
         this.map.setBounds(bounds);
+
+        for (let index in this.markers) {
+          let overlay = new kakao.maps.CustomOverlay({
+            map: this.map,
+            position: this.markers[index].getPosition(),
+          });
+
+          let content = document.createElement("div");
+          content.className = "overlay-box";
+
+          let info = document.createElement("div");
+          info.className = "overlay-info";
+
+          let title = document.createElement("div");
+          title.className = "overlay-title";
+          title.appendChild(
+            // eslint-disable-next-line prettier/prettier
+            document.createTextNode(this.buildingList[index].apartmentName)
+          );
+
+          let close = document.createElement("div");
+          close.className = "overlay-close";
+          close.onclick = function () {
+            overlay.setMap(null);
+          };
+
+          title.appendChild(close);
+
+          let body = document.createElement("div");
+          body.className = "overlay-body";
+
+          let img = document.createElement("div");
+          img.className = "overlay-img";
+          // let image = document.createElement("img");
+          // image.setAttribute(":src", "@/assets/house.svg");
+          // image.width = "73";
+          // image.height = "70";
+          // img.appendChild(image);
+
+          let desc = document.createElement("div");
+          desc.className = "overlay-desc";
+          let ellipsis = document.createElement("div");
+          ellipsis.className = "overlay-ellipsis";
+          ellipsis.appendChild(
+            // eslint-disable-next-line prettier/prettier
+            document.createTextNode(this.buildingList[index].address)
+          );
+
+          desc.appendChild(ellipsis);
+
+          body.appendChild(img);
+          body.appendChild(desc);
+
+          info.appendChild(title);
+          info.appendChild(body);
+
+          content.appendChild(info);
+
+          kakao.maps.event.addListener(this.markers[index], "click", () => {
+            overlay.setMap(this.map);
+            // eslint-disable-next-line prettier/prettier
+          });
+
+          overlay.setContent(content);
+          overlay.setMap(null);
+        }
       }
     },
     moveMarker(lat, lng) {
@@ -112,5 +179,104 @@ export default {
 #map {
   width: 100%;
   height: 500px;
+}
+</style>
+
+<style>
+.overlay-box {
+  position: absolute;
+  left: 0;
+  bottom: 40px;
+  width: 288px;
+  height: 132px;
+  margin-left: -144px;
+  text-align: left;
+  overflow: hidden;
+  font-size: 12px;
+  font-family: "Malgun Gothic", dotum, "돋움", sans-serif;
+  line-height: 1.5;
+}
+.overlay-box * {
+  padding: 0;
+  margin: 0;
+}
+.overlay-box .overlay-info {
+  width: 286px;
+  height: 120px;
+  border-radius: 5px;
+  border-bottom: 2px solid #ccc;
+  border-right: 1px solid #ccc;
+  overflow: hidden;
+  background: #fff;
+}
+.overlay-box .overlay-info:nth-child(1) {
+  border: 0;
+  box-shadow: 0px 1px 2px #888;
+}
+.overlay-info .overlay-title {
+  padding: 5px 0 0 10px;
+  height: 30px;
+  background: #eee;
+  border-bottom: 1px solid #ddd;
+  font-size: 18px;
+  font-weight: bold;
+}
+.overlay-info .overlay-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #888;
+  width: 17px;
+  height: 17px;
+  background: url("https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png");
+}
+.overlay-info .overlay-close:hover {
+  cursor: pointer;
+}
+.overlay-info .overlay-body {
+  position: relative;
+  overflow: hidden;
+}
+.overlay-info .overlay-desc {
+  position: relative;
+  margin: 13px 0 0 90px;
+  height: 75px;
+}
+.overlay-desc .overlay-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.overlay-desc .overlay-jibun {
+  font-size: 11px;
+  color: #888;
+  margin-top: -2px;
+}
+.overlay-info .overlay-img {
+  position: absolute;
+  top: 6px;
+  left: 5px;
+  width: 73px;
+  height: 71px;
+  border: 1px solid #ddd;
+  color: #888;
+  overflow: hidden;
+}
+.overlay-img {
+  background: url(@/assets/house.svg) no-repeat;
+  background-position: center;
+}
+.overlay-info:after {
+  content: "";
+  position: absolute;
+  margin-left: -12px;
+  left: 50%;
+  bottom: 0;
+  width: 22px;
+  height: 12px;
+  background: url("https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png");
+}
+.overlay-info .overlay-link {
+  color: #5085bb;
 }
 </style>

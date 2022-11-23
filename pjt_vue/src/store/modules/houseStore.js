@@ -56,6 +56,16 @@ const houseStore = {
 
     // 건물 정보
     SET_BUILDING_LIST(state, buildingList) {
+      for (let building of buildingList) {
+        if (building.bonbun != "") {
+          if (building.bubun != "") {
+            building.address =
+              building.address + `${building.bonbun}-${building.bubun}`;
+          } else {
+            building.address = building.address + `${building.bonbun}`;
+          }
+        }
+      }
       state.buildingList = buildingList;
     },
     SET_BUILDING_DETAIL(state, buildingDetail) {
@@ -159,6 +169,7 @@ const houseStore = {
         }
       );
     },
+
     async initBuildinginfo({ commit }) {
       await commit("SET_BUILDING_LIST", []);
       await commit("SET_BUILDING_DETAIL", null);

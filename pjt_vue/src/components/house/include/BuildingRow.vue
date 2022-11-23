@@ -33,48 +33,20 @@ export default {
   },
 
   methods: {
-    ...mapActions(houseStore, ["getBuildingDetailInfo", "getBuildingAddress"]),
+    ...mapActions(houseStore, ["getBuildingDetailInfo"]),
     async getbuildingDetail() {
-      let geocoder = new window.kakao.maps.services.Geocoder();
-      let coord = new window.kakao.maps.LatLng(
-        this.building.lat,
-        // eslint-disable-next-line prettier/prettier
-        this.building.lng
-      );
-
-      let callback = (result, status) => {
-        if (status === window.kakao.maps.services.Status.OK) {
-          this.address = result[0]["address"].address_name;
-        }
-        // eslint-disable-next-line prettier/prettier
+      const payload = {
+        aptCode: this.building.aptCode,
+        detail: {
+          apartmentName: this.building.apartmentName,
+          buildYear: this.building.buildYear,
+          address: this.building.address,
+          lat: this.building.lat,
+          lng: this.building.lng,
+        },
       };
 
-      await geocoder.coord2Address(
-        coord.getLng(),
-        coord.getLat(),
-        // eslint-disable-next-line prettier/prettier
-        callback
-      );
-    },
-  },
-
-  watch: {
-    address: function (value) {
-      if (value) {
-        const payload = {
-          aptCode: this.building.aptCode,
-          detail: {
-            apartmentName: this.building.apartmentName,
-            buildYear: this.building.buildYear,
-            address: this.address,
-            lat: this.building.lat,
-            lng: this.building.lng,
-          },
-        };
-
-        this.getBuildingDetailInfo(payload);
-        this.address = "";
-      }
+      await this.getBuildingDetailInfo(payload);
     },
   },
 };

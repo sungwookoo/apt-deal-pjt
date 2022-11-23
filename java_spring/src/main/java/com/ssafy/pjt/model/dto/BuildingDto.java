@@ -2,23 +2,30 @@ package com.ssafy.pjt.model.dto;
 
 public class BuildingDto {
 	private String aptCode;
-	private  String dongCode;
-	private  String apartmentName;
+	private String dongCode;
+	private String apartmentName;
+	private String address;
+	private String bonbun;
+	private String bubun;
 	private String dealAmount;
-	private  String area;
-	private  int buildYear;
-	private  int dealYear;
-	private  String lat;
-	private  String lng;
-	
-	public BuildingDto () {}
+	private String area;
+	private int buildYear;
+	private int dealYear;
+	private String lat;
+	private String lng;
 
-	public BuildingDto(String aptCode, String dongCode, String apartmentName, String dealAmount, String area,
-			int buildYear, int dealYear, String lat, String lng) {
+	public BuildingDto() {
+	}
+
+	public BuildingDto(String aptCode, String dongCode, String apartmentName, String address, String bonbun,
+			String bubun, String dealAmount, String area, int buildYear, int dealYear, String lat, String lng) {
 		super();
 		this.aptCode = aptCode;
 		this.dongCode = dongCode;
 		this.apartmentName = apartmentName;
+		this.address = address;
+		this.bonbun = bonbun;
+		this.bubun = bubun;
 		this.dealAmount = dealAmount;
 		this.area = area;
 		this.buildYear = buildYear;
@@ -49,6 +56,30 @@ public class BuildingDto {
 
 	public void setApartmentName(String apartmentName) {
 		this.apartmentName = apartmentName;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getBonbun() {
+		return bonbun;
+	}
+
+	public void setBonbun(String bonbun) {
+		this.bonbun = bonbun;
+	}
+
+	public String getBubun() {
+		return bubun;
+	}
+
+	public void setBubun(String bubun) {
+		this.bubun = bubun;
 	}
 
 	public String getDealAmount() {
@@ -108,6 +139,12 @@ public class BuildingDto {
 		builder.append(dongCode);
 		builder.append(", apartmentName=");
 		builder.append(apartmentName);
+		builder.append(", address=");
+		builder.append(address);
+		builder.append(", bonbun=");
+		builder.append(bonbun);
+		builder.append(", bubun=");
+		builder.append(bubun);
 		builder.append(", dealAmount=");
 		builder.append(dealAmount);
 		builder.append(", area=");
@@ -123,5 +160,4 @@ public class BuildingDto {
 		builder.append("]");
 		return builder.toString();
 	}
-	
 }
