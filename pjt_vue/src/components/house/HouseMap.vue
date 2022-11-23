@@ -1,7 +1,7 @@
 <template>
-  <b-row>
-    <b-col id="map"></b-col>
-  </b-row>
+  <div>
+    <div id="map"></div>
+  </div>
 </template>
 
 <script>
@@ -177,8 +177,11 @@ export default {
 
 <style scoped>
 #map {
-  width: 100%;
-  height: 500px;
+  width: 80%;
+  height: 75%;
+  position: absolute;
+  overflow-y: hidden;
+  margin: 0px 15px;
 }
 </style>
 
@@ -187,7 +190,7 @@ export default {
   position: absolute;
   left: 0;
   bottom: 40px;
-  width: 288px;
+  width: 320px;
   height: 132px;
   margin-left: -144px;
   text-align: left;
@@ -201,7 +204,7 @@ export default {
   margin: 0;
 }
 .overlay-box .overlay-info {
-  width: 286px;
+  width: 320px;
   height: 120px;
   border-radius: 5px;
   border-bottom: 2px solid #ccc;
