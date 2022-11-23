@@ -145,7 +145,8 @@ export default {
       if (this.$route.path != "/") this.$router.push({ name: "Home" });
     },
     async moveMyDetail() {
-      this.setDetailUser(this.userInfo.userId);
+      console.log(this.userInfo.userId);
+      await this.setDetailUser(this.userInfo.userId);
       this.$router.push({ name: "UserDetail" });
     },
   },

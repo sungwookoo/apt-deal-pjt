@@ -10,22 +10,12 @@ export default {
     "detail-form": () => import("@/components/user/include/DetailForm.vue"),
   },
   created() {
-    const payload = {
-      userid: this.detailUserId,
-      callback: () => {
-        this.movePage();
-      },
-    };
-    this.userDetail(payload);
+    this.userDetail(this.detailUserId);
   },
   methods: {
-    ...mapActions(memberStore, ["getUserDetailInfo", "initDetailUser"]),
-    async userDetail(payload) {
-      await this.getUserDetailInfo(payload);
-    },
-    async movePage() {
-      await this.initDetailUser();
-      this.$router.push({ name: "Home" });
+    ...mapActions(memberStore, ["getUserDetailInfo"]),
+    async userDetail(userid) {
+      await this.getUserDetailInfo(userid);
     },
   },
   computed: {

@@ -243,16 +243,16 @@ public class MemberRestController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-	
+
 	// Naver 연동 로그인
 	@GetMapping("/naver/{id}")
-	public ResponseEntity<?> naverLogin(@PathVariable("id") String naverId) throws Exception{
+	public ResponseEntity<?> naverLogin(@PathVariable("id") String naverId) throws Exception {
 		try {
 			logger.debug("Naver 연동 아이디 확인 : " + naverId);
 			String userId = memberService.loginNaver(naverId);
 
 			Map<String, Object> resultMap = new HashMap<>();
-			if(userId != null) {
+			if (userId != null) {
 				String accessToken = jwtService.createAccessToken("userid", userId);// key, data
 				String refreshToken = jwtService.createRefreshToken("userid", userId);// key, data
 				memberService.saveRefreshToken(userId, refreshToken);
@@ -262,35 +262,46 @@ public class MemberRestController {
 				resultMap.put("access-token", accessToken);
 				resultMap.put("refresh-token", refreshToken);
 				resultMap.put("message", SUCCESS);
-				
+
 				return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
-				
-			}else {
+
+			} else {
 				resultMap.put("message", FAIL);
 				return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.ACCEPTED);
 			}
-		}catch (Exception e){
+		} catch (Exception e) {
 			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 	// Naver 연동 하기
 	@PutMapping("/naver")
-	public ResponseEntity<?> naverConnect(@RequestBody MemberDto memberDto) throws Exception{
+	public ResponseEntity<?> naverConnect(@RequestBody MemberDto memberDto) throws Exception {
 		try {
 			boolean isNaver = memberService.loginNaver(memberDto.getNaverId()) == null ? false : true;
 			Map<String, Object> resultMap = new HashMap<>();
-			if(isNaver) {
+			if (isNaver) {
 				resultMap.put("message", FAIL);
 				return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
-			}else {
+			} else {
 				memberService.connectNaver(memberDto);
-				
+
 				resultMap.put("message", SUCCESS);
 				return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 			}
-			
+
 		} catch (Exception e) {
+			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	// Naver 연동 해제
+	@DeleteMapping("/naver/{userid}")
+	public ResponseEntity<?> naverUnconnect(@PathVariable("userid") String userId) throws Exception{
+		try {
+			memberService.unconnectNaver(userId);
+			return new ResponseEntity<Void>(HttpStatus.OK);
+		}catch(Exception e) {
 			return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}

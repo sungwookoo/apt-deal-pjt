@@ -15,6 +15,7 @@
             class="mr-sm-2"
             placeholder="ID 검색..."
             v-model="idSearchParam"
+            @keyup.enter="validate"
             ref="idSearchParam"></b-form-input>
           <b-input-group-append>
             <b-button

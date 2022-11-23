@@ -36,4 +36,6 @@ public interface MemberService {
 
 	int connectNaver(MemberDto memberDto);
 
+	int unconnectNaver(String userId);
+
 }

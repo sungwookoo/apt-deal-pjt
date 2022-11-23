@@ -14,6 +14,7 @@ import {
   findPassword,
   updateUser,
   deleteUser,
+  snsUnconnect,
 } from "@/api/member";
 
 const memberStore = {
@@ -55,6 +56,7 @@ const memberStore = {
       state.userList = userList;
     },
     SET_DETAIL_USERID: (state, userid) => {
+      console.log("mutation 설정 : " + userid);
       state.detailUserId = userid;
     },
     INIT_DETAIL_USERID: (state) => {
@@ -120,6 +122,19 @@ const memberStore = {
             router.push({ name: "UserDetail" });
           } else {
             payload.failCallback();
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    async userSnsUnconnect(context, userId) {
+      await snsUnconnect(
+        userId,
+        ({ status }) => {
+          if (status == 200) {
+            console.log("연동 해제");
           }
         },
         (error) => {
@@ -226,15 +241,17 @@ const memberStore = {
         }
       );
     },
-    async getUserDetailInfo({ commit }, payload) {
+    async getUserDetailInfo({ commit, dispatch }, userid) {
+      console.log(userid);
       await getUserDetail(
-        payload.userid,
+        userid,
         ({ data, status }) => {
           if (status == 200) {
             console.log(data);
             commit("SET_USER_DETAIL_INFO", data);
           } else {
-            payload.callback();
+            dispatch("initDetailUser");
+            router.push({ name: "Home" });
           }
         },
         (error) => {
@@ -311,6 +328,7 @@ const memberStore = {
       );
     },
     async setDetailUser({ commit }, userid) {
+      console.log(userid + "============유저 설정");
       await commit("SET_DETAIL_USERID", userid);
     },
 

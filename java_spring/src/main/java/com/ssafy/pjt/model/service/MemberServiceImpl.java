@@ -102,5 +102,10 @@ public class MemberServiceImpl implements MemberService {
 	public int connectNaver(MemberDto memberDto) {
 		return memberDao.connectNaver(memberDto);
 	}
+	
+	@Override
+	public int unconnectNaver(String userId) {
+		return memberDao.unconnectNaver(userId);
+	}
 
 }

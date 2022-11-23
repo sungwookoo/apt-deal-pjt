@@ -12,6 +12,10 @@ async function snsConnect(info, success, fail) {
   await api.put(`/user/naver`, info).then(success).catch(fail);
 }
 
+async function snsUnconnect(userId, success, fail) {
+  await api.delete(`/user/naver/${userId}`).then(success).catch(fail);
+}
+
 async function findById(userid, success, fail) {
   api.defaults.headers["access-token"] = sessionStorage.getItem("access-token");
   await api.get(`/user/info/${userid}`).then(success).catch(fail);
@@ -55,6 +59,7 @@ export {
   login,
   snsLogin,
   snsConnect,
+  snsUnconnect,
   findById,
   tokenRegeneration,
   logout,

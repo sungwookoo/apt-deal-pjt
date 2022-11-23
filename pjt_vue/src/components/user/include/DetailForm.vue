@@ -122,6 +122,7 @@
             <b-row v-if="!isNaver" align-v="center">
               <b-col cols="1" id="naverIdLogin"></b-col>
               <b-col
+                class="naver_btn"
                 cols="7"
                 style="
                   height: 40px;
@@ -131,14 +132,17 @@
                   font-weight: bold;
                   color: white;
                   margin-left: 26px;
-                  background-color: #1ec800;
-                ">
-                연동 하기
+                  background-color: #dc3444;
+                  border-radius: 10%;
+                "
+                @click="connect">
+                미연동
               </b-col>
             </b-row>
             <b-row v-else align-v="center">
               <b-col cols="1" id="naverIdLogin" class="no-pointer"></b-col>
               <b-col
+                class="naver_btn"
                 cols="7"
                 style="
                   height: 40px;
@@ -149,7 +153,9 @@
                   color: white;
                   margin-left: 26px;
                   background-color: #1ec800;
-                ">
+                  border-radius: 10%;
+                "
+                @click="unconnect">
                 연동 완료
               </b-col>
             </b-row>
@@ -189,7 +195,11 @@ export default {
     };
   },
   methods: {
-    ...mapActions(memberStore, ["removeUser"]),
+    ...mapActions(memberStore, [
+      "removeUser",
+      "userSnsUnconnect",
+      "getUserDetailInfo",
+    ]),
     moveUserModify() {
       this.$router.push({
         name: "UserModify",
@@ -207,6 +217,17 @@ export default {
       await this.removeUser(this.userDetailInfo.userId);
       this.movePage();
     },
+
+    connect() {
+      window.document.querySelector("#naverIdLogin_loginButton").click();
+    },
+
+    async unconnect() {
+      if (window.confirm("연동을 해제하시겠습니까?")) {
+        await this.userSnsUnconnect(this.userDetailInfo.userId);
+        await this.getUserDetailInfo(this.userDetailInfo.userId);
+      }
+    },
   },
   computed: {
     ...mapState(memberStore, ["userDetailInfo"]),
@@ -223,5 +244,9 @@ export default {
 }
 .no-pointer {
   pointer-events: none;
+}
+
+.naver_btn:hover {
+  cursor: pointer;
 }
 </style>

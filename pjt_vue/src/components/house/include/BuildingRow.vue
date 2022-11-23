@@ -35,6 +35,7 @@ export default {
   methods: {
     ...mapActions(houseStore, ["getBuildingDetailInfo", "getBuildingAddress"]),
     async getbuildingDetail() {
+      alert("123");
       let geocoder = new window.kakao.maps.services.Geocoder();
       let coord = new window.kakao.maps.LatLng(
         this.building.lat,
