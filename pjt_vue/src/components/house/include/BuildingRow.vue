@@ -35,7 +35,6 @@ export default {
   methods: {
     ...mapActions(houseStore, ["getBuildingDetailInfo", "getBuildingAddress"]),
     async getbuildingDetail() {
-      alert("123");
       let geocoder = new window.kakao.maps.services.Geocoder();
       let coord = new window.kakao.maps.LatLng(
         this.building.lat,
@@ -60,7 +59,7 @@ export default {
   },
 
   watch: {
-    address: async function (value) {
+    address: function (value) {
       if (value) {
         const payload = {
           aptCode: this.building.aptCode,
@@ -73,7 +72,8 @@ export default {
           },
         };
 
-        await this.getBuildingDetailInfo(payload);
+        this.getBuildingDetailInfo(payload);
+        this.address = "";
       }
     },
   },
