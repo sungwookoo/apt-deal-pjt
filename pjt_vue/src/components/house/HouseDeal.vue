@@ -27,9 +27,14 @@
           </building-row>
         </div>
         <div v-else>건물 정보가 없습니다.</div>
-        <b-sidebar id="buildingDetail" title="상세 정보" width="20%" shadow>
-          <b-row class="px-3 py-2">
-            <b-col class="m-1" style="max-height: 100%; border: solid">
+        <b-sidebar
+          id="buildingDetail"
+          title="상세 정보"
+          width="20%"
+          shadow
+          body-class="no-scroll-board">
+          <b-row class="px-3 py-2 no-scroll-board">
+            <b-col class="m-1" style="max-height: 100%">
               <div v-if="buildingDetail">
                 <building-detail></building-detail>
               </div>
@@ -57,9 +62,21 @@ export default {
   },
 };
 </script>
+<style>
+.no-scroll-board::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
+}
 
+.no-scroll-board {
+  -ms-overflow-style: none;
+}
+</style>
 <style scoped>
 .no-scroll-board::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera*/
+}
+
+.no-scroll-board {
+  -ms-overflow-style: none;
 }
 </style>
