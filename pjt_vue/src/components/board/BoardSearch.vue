@@ -1,13 +1,19 @@
 <template>
   <div>
-    <div
-      v-if="type == '0' && count == 'total'"
-      class="justify-content-center search-total-box no-scroll-board"
-      style="overflow-y: scroll">
-      <search-row
-        v-for="board in searchNotice.slice(0, 3)"
-        :key="board.boardNo"
-        :board="board"></search-row>
+    <div v-if="type == '0' && count == 'total'">
+      <div class="search-menu-title mb-2">
+        <b-icon-bell-fill></b-icon-bell-fill> 공지사항 ({{
+          searchNotice.length
+        }})
+      </div>
+      <div
+        class="justify-content-center search-total-box no-scroll-board"
+        style="overflow-y: scroll">
+        <search-row
+          v-for="board in searchNotice.slice(0, 3)"
+          :key="board.boardNo"
+          :board="board"></search-row>
+      </div>
     </div>
     <div
       v-else-if="type == '0' && count == 'all'"
@@ -18,15 +24,21 @@
         :key="board.boardNo"
         :board="board"></search-row>
     </div>
-    <div></div>
-    <div
-      v-if="type == '1' && count == 'total'"
-      class="justify-content-center search-total-box no-scroll-board"
-      style="overflow-y: scroll">
-      <search-row
-        v-for="board in searchQna.slice(0, 3)"
-        :key="board.boardNo"
-        :board="board"></search-row>
+
+    <div v-if="type == '1' && count == 'total'">
+      <div class="search-menu-title mb-2 mt-3">
+        <b-icon-question-circle></b-icon-question-circle> QnA ({{
+          searchQna.length
+        }})
+      </div>
+      <div
+        class="justify-content-center search-total-box no-scroll-board"
+        style="overflow-y: scroll">
+        <search-row
+          v-for="board in searchQna.slice(0, 3)"
+          :key="board.boardNo"
+          :board="board"></search-row>
+      </div>
     </div>
     <div
       v-else-if="type == '1' && count == 'all'"
@@ -63,17 +75,22 @@ export default {
 
 .search-total-box {
   position: relative;
-  height: 310px;
+  height: 255px;
   width: 90%;
-  border: 3px solid #000;
+  /* border: 3px solid #000; */
   margin: auto;
 }
 
 .search-all-box {
   position: relative;
-  height: 650px;
+  /* height: 650px; */
   width: 90%;
-  border: 3px solid #000;
+  /* border: 3px solid #000; */
   margin: auto;
+}
+
+.search-menu-title {
+  font-weight: bold;
+  text-align: left;
 }
 </style>

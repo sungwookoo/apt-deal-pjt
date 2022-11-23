@@ -4,9 +4,15 @@
     align="left"
     style="height: 100px; max-height: 100px"
     @click="moveBoardDetail">
-    <b-card-text>{{
-      board.content.slice(0, 100) + (board.content.length >= 100 ? "..." : "")
-    }}</b-card-text>
+    <b-card-text
+      >{{
+        board.content.slice(0, 100) + (board.content.length >= 100 ? "..." : "")
+      }}
+      <span style="float: right; color: gray"
+        >{{ board.userId }} <span style="color: lightgray">|</span>
+        {{ $moment(this.board.createDate).format("YYYY.MM.DD.") }}</span
+      ></b-card-text
+    >
   </b-card>
 </template>
 
