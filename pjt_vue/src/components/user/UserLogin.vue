@@ -105,6 +105,8 @@ export default {
         console.log(this.userInfo);
         console.log(this.userInfo + "======= 로그인 성공");
         this.$router.push({ name: "Home" });
+      } else {
+        alert("로그인 실패");
       }
     },
     moveCreateUser() {
