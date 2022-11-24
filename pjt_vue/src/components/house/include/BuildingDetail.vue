@@ -7,6 +7,7 @@
         height: 300px;
         min-height: 300px;
         max-height: 300px;
+        background-position: center;
       "></div>
     <div class="mt-3" style="font-weight: bold; font-size: 17px">
       <h4>{{ buildingDetail.apartmentName }}</h4>
@@ -52,7 +53,20 @@ export default {
 
       // 특정 위치의 좌표와 가까운 로드뷰의 panoId를 추출하여 로드뷰를 띄운다.
       roadviewClient.getNearestPanoId(position, 50, function (panoId) {
-        roadview.setPanoId(panoId, position); //panoId와 중심좌표를 통해 로드뷰 실행
+        if (panoId) roadview.setPanoId(panoId, position);
+        //panoId와 중심좌표를 통해 로드뷰 실행
+        else {
+          roadviewContainer.setAttribute(
+            "style",
+            "width: 100%;" +
+              "height: 300px;" +
+              "min-height: 300px;" +
+              "max-height: 300px;" +
+              "background: " +
+              // eslint-disable-next-line prettier/prettier
+              `url(${require("@/assets/house.svg")}) no-repeat center;`
+          );
+        }
       });
     },
   },

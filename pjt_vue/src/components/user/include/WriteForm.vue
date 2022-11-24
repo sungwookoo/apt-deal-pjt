@@ -163,7 +163,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(memberStore, ["userJoin", "userModify"]),
+    ...mapActions(memberStore, ["userJoin", "userModify", "userInfo"]),
     validate() {
       let isValid = true;
       let errMsg = "";
@@ -212,7 +212,13 @@ export default {
       const payload = {
         user: this.input,
         callback: () => {
-          this.moveLogin();
+          if (
+            this.userInfo == null ||
+            this.userInfo == {} ||
+            this.userInfo == undefined
+          )
+            this.moveLogin();
+          else this.$router.push({ name: "Home" });
         },
       };
       await this.userJoin(payload);

@@ -67,51 +67,6 @@
       </b-col>
       <!-- <b-col v-else class="text-center">도서 목록이 없습니다.</b-col> -->
     </b-row>
-
-    <!-- <b-row
-      class="border-dark mt-3 p-2"
-      style="
-        border-bottom-style: solid;
-        border-width: 3px;
-        font-size: 17px;
-        font-weight: bold;
-      ">
-      <b-col cols="6">제목</b-col>
-      <b-col
-        cols="3"
-        style="
-          border-right-style: dotted;
-          border-left-style: dotted;
-          border-width: 2px;
-        "
-        >작성자</b-col
-      >
-      <b-col cols="3">날짜</b-col>
-    </b-row>
-
-    <div class="no-scroll-board" style="height: 530px; overflow-y: scroll">
-      <board-row v-for="board in boardList" :key="board.boardNo" :board="board">
-      </board-row>
-    </div> -->
-    <div class="d-flex justify-content-center mt-0">
-      <button class="btn btn-dark me-3">◀</button>
-      <span
-        class="text-black mx-2 align-self-center text-decoration-none"
-        href="">
-        1
-      </span>
-      <a class="text-black mx-2 align-self-center text-decoration-none" href="">
-        2
-      </a>
-      <a class="text-primary mx-2 align-self-center" href=""> 3 </a>
-      <a class="text-black mx-2 align-self-center text-decoration-none" href="">
-        4
-      </a>
-      <a class="text-black mx-2 align-self-center text-decoration-none" href="">
-        5
-      </a>
-      <button class="btn btn-dark ms-3">▶</button>
-    </div>
     <br />
     <b-row align-v="center" align-h="center">
       <b-col cols="1.2">

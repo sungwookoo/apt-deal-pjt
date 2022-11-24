@@ -109,4 +109,9 @@
 		WHERE user_id = #{userId}
 	</update>
 
+	<update id="unconnectNaver" parameterType="memberDto">
+		UPDATE members
+		SET naver_id = NULL
+		WHERE user_id = #{userId}
+	</update>
 </mapper>
