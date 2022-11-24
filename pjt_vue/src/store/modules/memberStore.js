@@ -305,10 +305,10 @@ const memberStore = {
         }
       );
     },
-    async removeUser({ state }, userId) {
+    async removeUser({ state, dispatch }, userId) {
       // 로그아웃 실행(본인 계정 삭제라면)
       if (state.isLogin && state.userInfo.userId == userId) {
-        await logout(userId);
+        await dispatch("userLogout", userId);
       }
 
       // 회원 삭제 실행
