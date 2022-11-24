@@ -83,7 +83,7 @@ export default {
 
 .search-all-box {
   position: relative;
-  /* height: 650px; */
+  height: 600px;
   width: 90%;
   /* border: 3px solid #000; */
   margin: auto;

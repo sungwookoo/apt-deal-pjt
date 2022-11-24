@@ -132,6 +132,7 @@ export default {
         };
         await this.createInterestArea(info);
         this.interest = true;
+        this.feedback = "이미 추가된 지역입니다";
       }
     },
 

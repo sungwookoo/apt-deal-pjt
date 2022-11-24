@@ -52,9 +52,9 @@
 			            ' ') AS address,
 				TRIM(LEADING '0' FROM i.bonbun) AS bonbun ,
 				TRIM(LEADING '0' FROM i.bubun) AS bubun,
-			    MAX(d.dealAmount) AS dealAmount,
-			    MAX(d.dealYear) AS dealYear,
-			    MAX(d.area) AS area,
+			    AVG(d.dealAmount) dealAmount,
+			    MAX(d.dealYear) dealYear,
+			    AVG(d.area) area,
 			    i.lng,
 			    i.lat
 		FROM

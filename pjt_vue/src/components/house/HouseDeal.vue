@@ -8,7 +8,6 @@
         min-height: 75%;
         max-height: 75%;
         height: 75%;
-        border: solid;
         position: absolute;
       ">
       <b-col class="m-1" style="width: 100%; max-height: 100%">

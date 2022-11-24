@@ -8,12 +8,14 @@
         min-height: 300px;
         max-height: 300px;
       "></div>
-    <div style="font-weight: bold; font-size: 17px">
-      {{ buildingDetail.apartmentName }}
+    <div class="mt-3" style="font-weight: bold; font-size: 17px">
+      <h4>{{ buildingDetail.apartmentName }}</h4>
     </div>
-    <div class="text-left">건축 년도 : {{ buildingDetail.buildYear }}</div>
-    <div class="text-left">주소 : {{ buildingDetail.address }}</div>
-    <div class="text-left">총 거래 횟수 : {{ buildingDetailList.length }}</div>
+    <div class="text-left mt-1 mb-3">
+      <div>주소 : {{ buildingDetail.address }}</div>
+      <div>건축 년도 : {{ buildingDetail.buildYear }}</div>
+      <div>총 거래 횟수 : {{ buildingDetailList.length }}</div>
+    </div>
     <b-table
       sticky-header="400px"
       :items="buildingDetailList"

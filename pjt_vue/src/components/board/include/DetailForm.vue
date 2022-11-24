@@ -20,7 +20,7 @@
           <b-card-body
             class="text-left"
             style="height: 400px; overflow-y: scroll">
-            <div :inner-html.prop="board.content"></div>
+            <div :inner-html.prop="board.content | filterEnterToBr"></div>
           </b-card-body>
         </b-card>
       </b-col>

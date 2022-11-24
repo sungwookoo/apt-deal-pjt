@@ -1,19 +1,15 @@
 <template>
-  <div style="border: solid" @click="getbuildingDetail">
+  <div
+    class="p-3"
+    style="background-color: rgba(206, 206, 206, 0.3); border-radius: 5%"
+    @click="getbuildingDetail">
     <div>
-      {{
-        building.apartmentName +
-        "(" +
-        building.lat.slice(0, 6) +
-        ", " +
-        building.lng.slice(0, 6) +
-        ")"
-      }}
+      <h4>{{ building.apartmentName }}</h4>
     </div>
     <div>건축 년도 : {{ building.buildYear }}</div>
-    <div>최대 매매 가격 : {{ building.dealAmount }}</div>
-    <div>최근 매매 년도 : {{ building.dealYear }}</div>
-    <div>최대 매매 면적 : {{ building.area }}</div>
+    <div>최근 거래 일자 : {{ building.dealYear }}</div>
+    <div>평균 매매 가격 : {{ building.dealAmount }}</div>
+    <div>평균 매매 면적 : {{ building.area }}</div>
   </div>
   <!-- 
     https://bootstrap-vue.org/play
